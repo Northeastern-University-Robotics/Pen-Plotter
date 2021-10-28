@@ -1,12 +1,9 @@
 cmake_minimum_required(VERSION 3.0.2)
+
+# Declare the project to CMake
 project(controls)
 
-## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++11)
-
 ## Find catkin macros and libraries
-## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
-## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
@@ -15,34 +12,36 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
 )
 
+# This macro sets up the Python modules (for message generation)
+# by referencing the 'setup.py' file in the package
+catkin_python_setup()
+
+# Add and generate the message files for the controls package
 add_message_files(
   FILES
   MotorOrientation.msg
 )
-
-catkin_install_python(PROGRAMS src/raspberry_controls.py src/moteus.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 generate_messages(
   DEPENDENCIES
   controls
 )
 
-catkin_package()
+# Allow CMake to mark raspberry_controls.py to be executable
+# instead of having everybody do 'chmod +x raspberry_controls.py'
+catkin_install_python(PROGRAMS src/raspberry_controls.py src/moteus.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
+# ----- C++ -----
+
+
+
+# Declare the 
 include_directories(include ${catkin_INCLUDE_DIRS})
 add_executable(nuc_motor_controls src/nuc_motor_controls.cpp)
 target_link_libraries(nuc_motor_controls ${catkin_LIBRARIES})
 
-
-## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
-
-
-## Uncomment this if the package has a setup.py. This macro ensures
-## modules and global scripts declared therein get installed
-## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
-# catkin_python_setup()
+catkin_package()
 
 ################################################
 ## Declare ROS messages, services and actions ##
@@ -67,9 +66,6 @@ target_link_libraries(nuc_motor_controls ${catkin_LIBRARIES})
 ##     and list every .msg/.srv/.action file to be processed
 ##   * uncomment the generate_messages entry below
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
-
-##Generate messages in the 'msg' folder
-
 
 ## Generate services in the 'srv' folder
 # add_service_files(

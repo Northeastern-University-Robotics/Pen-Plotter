@@ -1,6 +1,6 @@
 from typing import List
 from controls.msg import MotorOrientation
-import moteus
+#import moteus
 import rospy
 import datetime
 
@@ -12,13 +12,15 @@ class RaspberryPiMoteusWrapper:
     incoming sensor data from the Moteus motor hardware into
     ROS messages (the moteus interface is incompatible with ROS).
     Details about the actual moteus motors is mostly irrelvant
-    to the interface provided by the class
+    to the interface provided by the class; clients need only
+    label particular motors and identify how often the hardware
+    should be queried for state changes.
 
     Each instance of the RaspberryPiMoteusWrapper services a 
     fixed number of moteus motors; you cannot change the number
     (or names) of the motors that are serviced by each instance.
     Instead, create a new instance of the class and replace the 
-    old instance to
+    old instance to add more motors
 
     NOTE: The class is intended to function as a singleton, as 
     each instance serves as a publisher to the ?INSERT TOPIC NAME HERE?
@@ -41,10 +43,16 @@ class RaspberryPiMoteusWrapper:
         A subscriber which listens to outgoing messages from
         the Intel NUC
 
+    current_orientation_publisher: rosdpy.Publisher
+        A publisher which periodically posts the 
+        status of all the Moteus motors this instance
+        keeps tracks of
+
     Methods
     -------
-    info(additional=""):
-        Prints the person's name and age.
+    run_motor_orientation_loop():
+        Begins an infinite loop within which the instance publishes
+        on the ROS topic about the current orientation of the motors
     """
 
     # The maximum number of ROS messages that are buffered
@@ -59,10 +67,7 @@ class RaspberryPiMoteusWrapper:
     # publish to
     PUB_TOPIC_NAME = 'current_orientation'
 
-    # MARK: - Initializers -
-
-    def __init__(self, other_wrapper):
-        self.__init__(self, names=self.names + other_wrapper.names)
+    # MARK: - Constructors -
 
     def __init__(self, names: List[str], hw_refresh_rate: float = 0.016): 
         """Construct a new wrapper around the Moteus class
@@ -87,13 +92,12 @@ class RaspberryPiMoteusWrapper:
         self.hw_refresh_rate = hw_refresh_rate
         self.num_motors = num_motors
         self.id_map = { names[i] : i for i in range(num_motors) }
-        
         #self.moteus_instance = moteus.Moteus(ids)
 
         self.desired_orientation_sub = rospy.Subscriber(
             'desired_orientation', 
             MotorOrientation, 
-            callback=self.desired_orientation_callback,
+            callback=self.__desired_orientation_callback,
             queue_size=RaspberryPiMoteusWrapper.QUEUE_SIZE
         )
 
@@ -121,7 +125,7 @@ class RaspberryPiMoteusWrapper:
 
     # MARK: - ROS Messages -
 
-    def desired_orientation_callback(self, msg: MotorOrientation):
+    def __desired_orientation_callback(self, msg: MotorOrientation):
         """A method which serves as the callback function
         of the ROS subscriber representing this instance 
         as a listener to the 'desired_orientation' topic
@@ -134,31 +138,29 @@ class RaspberryPiMoteusWrapper:
             pos = msg.attributes[3 * motor_id]
             vel = msg.attributes[3 * motor_id + 1]
             torque = msg.attributes[3 * motor_id + 2]
-            self.moteus_instance.setAttributes(motor_id, pos=pos, velocity=vel, torque=torque)
-
+            #self.moteus_instance.setAttributes(motor_id, pos=pos, velocity=vel, torque=torque)
     
     def run_motor_orientation_loop(self):
-        """
+        """Starts the infinite loop to continuously
+        publish ROS notifications about the current state
+        of the Moteus motors
         """
         rate = rospy.Rate(self.hw_refresh_rate)
 
         while (not rospy.is_shutdown()):
             latest_moteus_hardware_state = self.moteus_instance.getParsedResults()
-
-            print('Do something here')
             rate.sleep()
             
 
     # MARK - Python Magic Methods -
 
     def __str__(self):
-        """Outputs a formatted string describing the instance
-        """
+        """Outputs a formatted string describing the instance"""
         name = 'RaspberryPiMoteusWrapper\n'
         subscribed_to = 'subscribed to: ' + RaspberryPiMoteusWrapper.SUBSCR_TOPIC_NAME + "\n"
         pub_to = 'publishing to: ' + RaspberryPiMoteusWrapper.PUB_TOPIC_NAME
         return name + subscribed_to + pub_to
-
+        
 
 if __name__ == 'main':
     wrapper = RaspberryPiMoteusWrapper(names=['left-motor'], hw_refresh_rate=0.1)
