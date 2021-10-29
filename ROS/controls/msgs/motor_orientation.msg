@@ -1,2 +1,3 @@
-int64 numMotors
-float64[][] attributes
+int32 numMotors
+int32 numAttributes
+float64[] attributes
