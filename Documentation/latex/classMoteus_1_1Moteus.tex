@@ -1,0 +1,228 @@
+\hypertarget{classMoteus_1_1Moteus}{}\section{Moteus.\+Moteus Class Reference}
+\label{classMoteus_1_1Moteus}\index{Moteus.\+Moteus@{Moteus.\+Moteus}}
+
+
+Class used to manipulate the \hyperlink{classMoteus_1_1Moteus}{Moteus} motor controllers via C\+AN using the Pi3\+Hat.  
+
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classMoteus_1_1Moteus_a9ef12c6e83e497055dd6ee037808dc30}{\+\_\+\+\_\+init\+\_\+\+\_\+} (self, ids=\mbox{[}\mbox{[}$\,$\mbox{]}, simulation=True)
+\begin{DoxyCompactList}\small\item\em Default constructor for the \hyperlink{classMoteus_1_1Moteus}{Moteus} class. \end{DoxyCompactList}\item 
+def \hyperlink{classMoteus_1_1Moteus_a75698a813e2463f3c245a4b7fa07b2a0}{set\+Attributes} (self, can\+Id, pos=math.\+nan, velocity=math.\+nan, torque=math.\+nan)
+\begin{DoxyCompactList}\small\item\em Set attributes function is used to set the position, velocity and torque of a specific motor. \end{DoxyCompactList}\item 
+def \hyperlink{classMoteus_1_1Moteus_a2e5bafddee5cfb9833f14ebf5e12f354}{close\+Moteus} (self)
+\begin{DoxyCompactList}\small\item\em This will safely stop the operation of all of the motors. \end{DoxyCompactList}\item 
+def \hyperlink{classMoteus_1_1Moteus_aa9dc57d842421f50e803f4aa908a924e}{get\+Raw\+Results} (self)
+\begin{DoxyCompactList}\small\item\em Returns the raw results straight from the \hyperlink{classMoteus_1_1Moteus}{Moteus} motors, unparsed. \end{DoxyCompactList}\item 
+def \hyperlink{classMoteus_1_1Moteus_abb96e640583834610ef847305d02576f}{get\+Parsed\+Results\+Custom} (self, results)
+\begin{DoxyCompactList}\small\item\em Returns a nicely parsed list containing all of the motor\textquotesingle{}s current attributes. \end{DoxyCompactList}\item 
+def \hyperlink{classMoteus_1_1Moteus_aa2ab74638356c8b9edb5ecf959c30645}{get\+Parsed\+Results} (self)
+\begin{DoxyCompactList}\small\item\em Returns a nicely parsed list containing all of the motor\textquotesingle{}s current attributes. \end{DoxyCompactList}\item 
+def \hyperlink{classMoteus_1_1Moteus_a2e1ae006212c2b107a6b63478b1137cb}{is\+Ready} (self)
+\begin{DoxyCompactList}\small\item\em Gets the property to see if the motors are initialized or not. \end{DoxyCompactList}\item 
+def \hyperlink{classMoteus_1_1Moteus_a363a7881500b2ca7efccc6dfd64dca42}{wait\+Until\+Ready} (self)
+\begin{DoxyCompactList}\small\item\em This is a blocking function that waits until the motors are fully initialized without errors. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classMoteus_1_1Moteus_af12fc974a2bb9167c6c9ea7d231c89db}\label{classMoteus_1_1Moteus_af12fc974a2bb9167c6c9ea7d231c89db}} 
+{\bfseries ids}
+\item 
+\mbox{\Hypertarget{classMoteus_1_1Moteus_a42b22e76aead84473c854849ed3bee0e}\label{classMoteus_1_1Moteus_a42b22e76aead84473c854849ed3bee0e}} 
+{\bfseries exit\+Flag}
+\item 
+\mbox{\Hypertarget{classMoteus_1_1Moteus_a7f17efde995adf119698a4714f0bec05}\label{classMoteus_1_1Moteus_a7f17efde995adf119698a4714f0bec05}} 
+{\bfseries is\+Ready}
+\item 
+\mbox{\Hypertarget{classMoteus_1_1Moteus_aea1163a7d229f8aa79b4f6c9db9a29e6}\label{classMoteus_1_1Moteus_aea1163a7d229f8aa79b4f6c9db9a29e6}} 
+{\bfseries raw\+Ids}
+\item 
+\mbox{\Hypertarget{classMoteus_1_1Moteus_ac7e43da2bc7b1c2603047fd3490e5bc6}\label{classMoteus_1_1Moteus_ac7e43da2bc7b1c2603047fd3490e5bc6}} 
+{\bfseries motor\+\_\+states}
+\item 
+\mbox{\Hypertarget{classMoteus_1_1Moteus_a04b495074c6bc61e4266ad54507c3954}\label{classMoteus_1_1Moteus_a04b495074c6bc61e4266ad54507c3954}} 
+{\bfseries results}
+\item 
+\mbox{\Hypertarget{classMoteus_1_1Moteus_a538838fb137954da520feaaea7000e87}\label{classMoteus_1_1Moteus_a538838fb137954da520feaaea7000e87}} 
+{\bfseries lock}
+\item 
+\mbox{\Hypertarget{classMoteus_1_1Moteus_a5570b98715bc10f2c1455574c928a676}\label{classMoteus_1_1Moteus_a5570b98715bc10f2c1455574c928a676}} 
+{\bfseries states\+Lock}
+\item 
+\mbox{\Hypertarget{classMoteus_1_1Moteus_a6ffa15416387e5eb8d20db582f34557d}\label{classMoteus_1_1Moteus_a6ffa15416387e5eb8d20db582f34557d}} 
+{\bfseries main\+Results}
+\item 
+\mbox{\Hypertarget{classMoteus_1_1Moteus_a23432463cebd296f6421a5abfff369bb}\label{classMoteus_1_1Moteus_a23432463cebd296f6421a5abfff369bb}} 
+{\bfseries moteus\+\_\+thread}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class used to manipulate the \hyperlink{classMoteus_1_1Moteus}{Moteus} motor controllers via C\+AN using the Pi3\+Hat. 
+
+\begin{DoxyAuthor}{Author}
+Jared Cohen (\href{mailto:cohen.jar@northeastern.edu}{\tt cohen.\+jar@northeastern.\+edu}) 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+10/27/2021 
+\end{DoxyDate}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classMoteus_1_1Moteus_a9ef12c6e83e497055dd6ee037808dc30}\label{classMoteus_1_1Moteus_a9ef12c6e83e497055dd6ee037808dc30}} 
+\index{Moteus\+::\+Moteus@{Moteus\+::\+Moteus}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!Moteus\+::\+Moteus@{Moteus\+::\+Moteus}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+init\+\_\+\+\_\+()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def Moteus.\+Moteus.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{ids = {\ttfamily \mbox{[}\mbox{[}\mbox{]}},  }\item[{}]{simulation = {\ttfamily True} }\end{DoxyParamCaption})}
+
+
+
+Default constructor for the \hyperlink{classMoteus_1_1Moteus}{Moteus} class. 
+
+Before utilizing motors, make sure to wait using the \hyperlink{classMoteus_1_1Moteus_a363a7881500b2ca7efccc6dfd64dca42}{wait\+Until\+Ready()} function.
+
+The \hyperlink{classMoteus_1_1Moteus}{Moteus} class will do a few things on startup.
+\begin{DoxyItemize}
+\item Check all C\+AN ports for valid connections as described
+\begin{DoxyItemize}
+\item If there is one error, a Moteus\+Exception will be raised. It will then enter simulation mode (described below) if the parameter is True
+\end{DoxyItemize}
+\item Initialize all motor positions to the current value on the motor. Therefore, if the class was restarted but the motors were not, the position remains the same.
+\item Wait until all motors are ready. This will B\+L\+O\+CK code, make sure to accomodate accordingly. This is only done once on startup. 
+\begin{DoxyParams}{Parameters}
+{\em ids} & These are the C\+AN ids of the motors attached to the Pi3\+Hat. Is a list of lists, with each internal list representing the I\+Ds of the motors attatched to that can drive For example, \mbox{[}\mbox{[}\mbox{]},\mbox{[}\mbox{]},\mbox{[}4\mbox{]}\mbox{]} means that on C\+AN bus 3, there is 1 motor with ID 4 attatched.
+\begin{DoxyItemize}
+\item All of these I\+Ds must be unique, regardless if they are on the same C\+AN bus or not. 
+\end{DoxyItemize}\\
+\hline
+{\em simulation} & (N\+OT I\+M\+P\+L\+E\+M\+E\+N\+T\+ED Y\+ET) This parameter, default True, will bring the class into simulation mode if an error arises on startup Simulation mode will mimic all values set as if there were a motor present, therefore, code can be tested without being connected to hardware \\
+\hline
+\end{DoxyParams}
+
+\end{DoxyItemize}
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classMoteus_1_1Moteus_a2e5bafddee5cfb9833f14ebf5e12f354}\label{classMoteus_1_1Moteus_a2e5bafddee5cfb9833f14ebf5e12f354}} 
+\index{Moteus\+::\+Moteus@{Moteus\+::\+Moteus}!close\+Moteus@{close\+Moteus}}
+\index{close\+Moteus@{close\+Moteus}!Moteus\+::\+Moteus@{Moteus\+::\+Moteus}}
+\subsubsection{\texorpdfstring{close\+Moteus()}{closeMoteus()}}
+{\footnotesize\ttfamily def Moteus.\+Moteus.\+close\+Moteus (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+This will safely stop the operation of all of the motors. 
+
+Will stop the motors regardless of position or current velocity. Make sure to account for this. \mbox{\Hypertarget{classMoteus_1_1Moteus_aa2ab74638356c8b9edb5ecf959c30645}\label{classMoteus_1_1Moteus_aa2ab74638356c8b9edb5ecf959c30645}} 
+\index{Moteus\+::\+Moteus@{Moteus\+::\+Moteus}!get\+Parsed\+Results@{get\+Parsed\+Results}}
+\index{get\+Parsed\+Results@{get\+Parsed\+Results}!Moteus\+::\+Moteus@{Moteus\+::\+Moteus}}
+\subsubsection{\texorpdfstring{get\+Parsed\+Results()}{getParsedResults()}}
+{\footnotesize\ttfamily def Moteus.\+Moteus.\+get\+Parsed\+Results (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Returns a nicely parsed list containing all of the motor\textquotesingle{}s current attributes. 
+
+\begin{DoxyReturn}{Returns}
+A list containing dictionaries with each motor\textquotesingle{}s attributes. -\/$>$ \mbox{[}\{motor1 data\}, \{motor2 data\}, ...\mbox{]} Contained (also the names of each key inside each dictionary)\+:
+\begin{DoxyItemize}
+\item M\+O\+DE
+\item P\+O\+S\+I\+T\+I\+ON
+\item V\+E\+L\+O\+C\+I\+TY
+\item T\+O\+R\+Q\+UE
+\item V\+O\+L\+T\+A\+GE
+\item T\+E\+M\+P\+E\+R\+A\+T\+U\+RE
+\item F\+A\+U\+LT 
+\end{DoxyItemize}
+\end{DoxyReturn}
+\mbox{\Hypertarget{classMoteus_1_1Moteus_abb96e640583834610ef847305d02576f}\label{classMoteus_1_1Moteus_abb96e640583834610ef847305d02576f}} 
+\index{Moteus\+::\+Moteus@{Moteus\+::\+Moteus}!get\+Parsed\+Results\+Custom@{get\+Parsed\+Results\+Custom}}
+\index{get\+Parsed\+Results\+Custom@{get\+Parsed\+Results\+Custom}!Moteus\+::\+Moteus@{Moteus\+::\+Moteus}}
+\subsubsection{\texorpdfstring{get\+Parsed\+Results\+Custom()}{getParsedResultsCustom()}}
+{\footnotesize\ttfamily def Moteus.\+Moteus.\+get\+Parsed\+Results\+Custom (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{results }\end{DoxyParamCaption})}
+
+
+
+Returns a nicely parsed list containing all of the motor\textquotesingle{}s current attributes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em results} & A specific set of results from the motors to be parsed\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A list containing dictionaries with each motor\textquotesingle{}s attributes. -\/$>$ \mbox{[}\{motor1 data\}, \{motor2 data\}, ...\mbox{]} Contained (also the names of each key inside each dictionary)\+:
+\begin{DoxyItemize}
+\item M\+O\+DE
+\item P\+O\+S\+I\+T\+I\+ON
+\item V\+E\+L\+O\+C\+I\+TY
+\item T\+O\+R\+Q\+UE
+\item V\+O\+L\+T\+A\+GE
+\item T\+E\+M\+P\+E\+R\+A\+T\+U\+RE
+\item F\+A\+U\+LT 
+\end{DoxyItemize}
+\end{DoxyReturn}
+\mbox{\Hypertarget{classMoteus_1_1Moteus_aa9dc57d842421f50e803f4aa908a924e}\label{classMoteus_1_1Moteus_aa9dc57d842421f50e803f4aa908a924e}} 
+\index{Moteus\+::\+Moteus@{Moteus\+::\+Moteus}!get\+Raw\+Results@{get\+Raw\+Results}}
+\index{get\+Raw\+Results@{get\+Raw\+Results}!Moteus\+::\+Moteus@{Moteus\+::\+Moteus}}
+\subsubsection{\texorpdfstring{get\+Raw\+Results()}{getRawResults()}}
+{\footnotesize\ttfamily def Moteus.\+Moteus.\+get\+Raw\+Results (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Returns the raw results straight from the \hyperlink{classMoteus_1_1Moteus}{Moteus} motors, unparsed. 
+
+May be faster although it is more of a hastle. \begin{DoxyVerb}       To be added: Format of the raw data type\end{DoxyVerb}
+ \mbox{\Hypertarget{classMoteus_1_1Moteus_a2e1ae006212c2b107a6b63478b1137cb}\label{classMoteus_1_1Moteus_a2e1ae006212c2b107a6b63478b1137cb}} 
+\index{Moteus\+::\+Moteus@{Moteus\+::\+Moteus}!is\+Ready@{is\+Ready}}
+\index{is\+Ready@{is\+Ready}!Moteus\+::\+Moteus@{Moteus\+::\+Moteus}}
+\subsubsection{\texorpdfstring{is\+Ready()}{isReady()}}
+{\footnotesize\ttfamily def Moteus.\+Moteus.\+is\+Ready (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Gets the property to see if the motors are initialized or not. 
+
+\begin{DoxyReturn}{Returns}
+True if the motors are ready and initialized, false if they are not 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classMoteus_1_1Moteus_a75698a813e2463f3c245a4b7fa07b2a0}\label{classMoteus_1_1Moteus_a75698a813e2463f3c245a4b7fa07b2a0}} 
+\index{Moteus\+::\+Moteus@{Moteus\+::\+Moteus}!set\+Attributes@{set\+Attributes}}
+\index{set\+Attributes@{set\+Attributes}!Moteus\+::\+Moteus@{Moteus\+::\+Moteus}}
+\subsubsection{\texorpdfstring{set\+Attributes()}{setAttributes()}}
+{\footnotesize\ttfamily def Moteus.\+Moteus.\+set\+Attributes (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{can\+Id,  }\item[{}]{pos = {\ttfamily math.nan},  }\item[{}]{velocity = {\ttfamily math.nan},  }\item[{}]{torque = {\ttfamily math.nan} }\end{DoxyParamCaption})}
+
+
+
+Set attributes function is used to set the position, velocity and torque of a specific motor. 
+
+Note, if this method is called once, it will use the motor\textquotesingle{}s built in configuration for max velocity and P\+ID in order to reach that position. Calling this method continuously for each motor if a constant velocity is desired is recommended. Read the pos paramter\textquotesingle{}s description for more information on how it reaches the position.
+
+
+\begin{DoxyParams}{Parameters}
+{\em can\+ID} & The ID specific to one motor (Not the bus). Note, if this value is incorrect, an error will be thrown to avoid wasting time checking if the can\+ID is valid every single time \\
+\hline
+{\em pos} & The position for the motor to move to. The motor will proceed to move to this position (using P\+ID) with the maximum velocity defined in the motor\textquotesingle{}s configuration and with a maximum torque specified by the torque parameter. Defaults to math.\+nan, do not pass \char`\"{}\+None\char`\"{}. \\
+\hline
+{\em velocity} & The velocity the motor will move at after the position is reached, not while moving to the position. Defaults to math.\+nan, do not pass \char`\"{}\+None\char`\"{} \\
+\hline
+{\em torque} & The maximum torque the motor should have when moving to a position. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classMoteus_1_1Moteus_a363a7881500b2ca7efccc6dfd64dca42}\label{classMoteus_1_1Moteus_a363a7881500b2ca7efccc6dfd64dca42}} 
+\index{Moteus\+::\+Moteus@{Moteus\+::\+Moteus}!wait\+Until\+Ready@{wait\+Until\+Ready}}
+\index{wait\+Until\+Ready@{wait\+Until\+Ready}!Moteus\+::\+Moteus@{Moteus\+::\+Moteus}}
+\subsubsection{\texorpdfstring{wait\+Until\+Ready()}{waitUntilReady()}}
+{\footnotesize\ttfamily def Moteus.\+Moteus.\+wait\+Until\+Ready (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+This is a blocking function that waits until the motors are fully initialized without errors. 
+
+It will block the main Thread (aka, where this method was called) \begin{DoxyVerb}       Returns if and only if the motors were deemed ready or there is an error. Eventually, a timeout needs to be implemented\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+R\+O\+S/moteus/Moteus.\+py\end{DoxyCompactItemize}
