@@ -17,9 +17,17 @@ from time import sleep
 import traceback
 from copy import deepcopy
 
+from MoteusException import *
 
 class Moteus:
     """Class used to manipulate the Moteus motor controllers via CAN using the Pi3Hat
+
+        Implements functions in order to set the attributes of all the motors as well as get the current states
+
+        Notes:
+            - Make sure that the motors CAN properties are configured properly
+            - Make sure to handle program the program being killed by using the closeMoteus() method, which is used to clean the threading properly
+
         @author Jared Cohen (cohen.jar@northeastern.edu)
         @date 10/27/2021
     """
@@ -50,6 +58,13 @@ class Moteus:
             for id in bus:
                 self.rawIds.append(id)
 
+        self.mainResults = []
+
+        if(MoteusCanError.hasDuplicates(self.rawIds)):
+            self.mainResults.append(MoteusCanError(self.rawIds, self.ids))
+        elif(len(self.ids) > 5):
+            self.mainResults.append(MoteusCanError(self.rawIds, self.ids))
+
         self.motor_states = {} #This will be the position, velocity, and torque to set to each individual motor.
         for id in self.rawIds:
             self.motor_states[id] = {"position" : math.nan, "velocity" : 0, "torque" : 0}
@@ -58,13 +73,31 @@ class Moteus:
 
         self.lock = Lock() #Create locks in order to avoid threading issues. This one is for the results,
         self.statesLock = Lock() #This lock is for the states (what to set the motors to)
-        self.mainResults = [None] * 1
-        self.moteus_thread = Thread(target=self.__moteusMain, args=()) #Create a new thread for the moteus async environment
-        self.moteus_thread.start() #Start the thread
 
-        self.waitUntilReady() #Wait until the motors are initialized, blocking
+        if(len(self.mainResults) == 0):
+            self.moteus_thread = Thread(target=self.__moteusMain, args=()) #Create a new thread for the moteus async environment
+            self.moteus_thread.start() #Start the thread
+
+            self.waitUntilReady() #Wait until the motors are initialized, blocking
         
-        #Process self.mainResults here for errors, to be implemented
+        if(len(self.mainResults) != 0):
+            if(not simulation): #If it is not in simulation mode, it prints the first error
+                raise self.mainResults[0]
+            else: #This is to enter simulation mode
+                self.exitFlag = False #Reset all of the variables
+                self.isReady = False
+                self.mainResults = []
+
+                warnings.warn(None, MoteusWarning) #Create a warning and set the simulation prefix for all prints from now on, to make sure user is aware
+                global print
+                print = MoteusWarning.getSimulationPrintFunction()
+                
+                sleep(2) #Added sleep so the user is aware of the warning since it is easy to miss
+                
+                self.sim_thread = Thread(target=self.__simulationMain, args=()) #Create a new thread for the moteus async environment
+                self.sim_thread.start() #Start the thread
+
+                self.waitUntilReady() #Wait until the sim is initialized, blocking
 
 
 
@@ -110,6 +143,17 @@ class Moteus:
         loop = createEventLoop() #Create an event loop and set the current event loop to it.
         asyncio.set_event_loop(loop)
 
+        def raiseError(error):
+            """
+            Safely closes the Thread while appending the error to be raised at a later time
+
+            @param  error   The error to be raised
+            """
+            self.exitFlag = True
+            self.mainResults.append(error)
+        
+        
+
         async def onClose(transport=None, servos = None): #Called on close, after self.exitFlag is True
 
             if(transport != None and servos != None): #Go through all motors and stop them
@@ -121,13 +165,16 @@ class Moteus:
 
                 results = self.getParsedResultsCustom(results)
 
-                await transport.cycle([
-                    x.make_position(
-                    position = results[i]["POSITION"],
-                    velocity = results[i]["VELOCITY"],
-                    maximum_torque = results[i]["TORQUE"]
-                    ) for i, x in enumerate(servos.values())
-                ])
+                try:
+                    await transport.cycle([
+                        x.make_position(
+                        position = results[i]["POSITION"],
+                        velocity = results[i]["VELOCITY"],
+                        maximum_torque = results[i]["TORQUE"]
+                        ) for i, x in enumerate(servos.values())
+                    ])
+                except IndexError:
+                    raiseError(MoteusCanError(self.rawIds, self.ids)) #This error corresponds to 
         
         async def main():
 
@@ -138,18 +185,22 @@ class Moteus:
                     bus_ids.append(id)
                 servo_bus_map[i+1] = bus_ids #Set the bus dictionary index to the ids
 
-            transport = moteus_pi3hat.Pi3HatRouter( #Create a router using the servo bus map
-                servo_bus_map = servo_bus_map
-            )
+            try:
+                transport = moteus_pi3hat.Pi3HatRouter( #Create a router using the servo bus map
+                    servo_bus_map = servo_bus_map
+                )
+            except RuntimeError:
+                raiseError(MoteusPermissionsError()) #Raise more descriptive error than what python can describe
+                return
 
             servos = {} #Go through all of the motors and create the moteus.Controller objects associated with them
             for id in self.rawIds:
                 servos[id] = moteus.Controller(id = id, transport=transport)
 
-
             await onOpen(transport, servos) #Call the onOpen function above.
 
             raw_ids = self.rawIds #Set the rawIDs so they can be used later for reference. Using local variables where possible saves a sliver of time
+
 
             self.isReady = True #Set ready to true so the class can be implemented elsewhere
 
@@ -176,14 +227,85 @@ class Moteus:
             await onClose(transport, servos) #Call onClose after the exitFlag is called
 
         asyncio.run(main()) #Run the main method (blocks until complete)
-        self.mainResults[0] = 1 #Set the results to [None], signifying correct exit procedure.
+
+    def __simulationMain(self):
+        """Creates an asyncronous environment and loop in order to host the simulation environment.
+            This method contains all of the asyncronous methods that make the simulation work properly and in a non-blocking way
+
+            - createEventLoop() creates a new event loop in order to avoid startup requirements in certain file configurations
+
+            - onOpen() Sets a default position on startup to 0
+            
+            - main() is the main loop in which the majority of the work happens
+                - Connects with the motors, raises MoteusException if there is no connection
+                - Returns 0 upon succesful completion
+                - Checks constantly the classes exitFlag on when to exit
+        """
+
+        def createEventLoop(): #Function to create and get a new event loop
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            return asyncio.get_event_loop()
+
+        loop = createEventLoop() #Create an event loop and set the current event loop to it.
+        asyncio.set_event_loop(loop)
+
+        class sim_results:
+            values = {}
+
+            def __init__(self, dic) -> None:
+                self.values = dic
+
+        def positionToResult():
+            unparsed = []
+            for motor in self.motor_states:
+                unparsed.append(
+                    sim_results(
+                    {
+                        0x0:"Simulation",
+                        0x1:self.motor_states[motor]["position"],
+                        0x2:self.motor_states[motor]["velocity"],
+                        0x3:self.motor_states[motor]["torque"],
+                        0x00d: 0,
+                        0x00e: 0,
+                        0x00f: []
+                    })
+                )
+            return unparsed
+
+        async def onOpen(): #Starts on open
+            results = positionToResult()
+            self.results = self.getParsedResultsCustom(results)
+
+        async def main():
+
+            await onOpen() #Call the onOpen function above.
+
+            self.isReady = True #Set ready to true so the class can be implemented elsewhere
+
+            while not self.exitFlag: #Loop while the exit method was not called
+
+                self.statesLock.acquire() #Set all of the states to the class variables, and use the lock to avoid issues
+                unparsed = positionToResult()
+                self.statesLock.release() #release the lock
+
+                self.lock.acquire() #Set the results and wait until they are free to write.
+                self.results = unparsed
+                self.lock.release()
+
+                await asyncio.sleep(0.02) #Minimum sleep time in order to make this method thread safe
+
+        asyncio.run(main()) #Run the main method (blocks until complete)
 
     def closeMoteus(self):
         """ This will safely stop the operation of all of the motors. Will stop the motors regardless of position or current velocity.
             Make sure to account for this.
         """
         self.exitFlag = True
-        self.moteus_thread.join()
+        if(self.sim_thread is None):
+            self.moteus_thread.join()
+        else:
+            self.sim_thread.join()
 
     def getRawResults(self): 
         """ Returns the raw results straight from the Moteus motors, unparsed. May be faster although it is more of a hastle.
@@ -273,11 +395,11 @@ class Moteus:
             
             Returns if and only if the motors were deemed ready or there is an error. Eventually, a timeout needs to be implemented
         """
-        while((not self.isReady) and (self.mainResults[0] is None)): #Wait until it is ready or there is an error
+        while((not self.isReady) and (len(self.mainResults) == 0)): #Wait until it is ready or there is an error
             sleep(0.1)
         
 if __name__ == '__main__':
-    m = Moteus(ids=[[],[],[2]])
+    m = Moteus(ids=[[],[],[2], [], [], [], []])
     to = 0.03
     m.setAttributes(2, pos=100, velocity = 0.2, torque=to)
     torques = []
@@ -290,5 +412,5 @@ if __name__ == '__main__':
                 m.setAttributes(2, pos=0, velocity =0.2, torque=to)
             elif(value[0]["POSITION"] <= 0):
                 m.setAttributes(2, pos=100, velocity =0.2, torque=to)
-            print(m.getRawResults())
+            print(m.getParsedResults())
         #m.getParsedResults()
