@@ -1,0 +1,12 @@
+digraph "MoteusException.MoteusException"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node0 [label="MoteusException.MoteusException",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node0 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="Exception",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node0 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="MoteusException.MoteusCan\lError",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classMoteusException_1_1MoteusCanError.html",tooltip="The MoteusCanError is a more specific MoteusError that alerts the user there is something wrong with ..."];
+  Node0 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="MoteusException.MoteusPermissions\lError",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classMoteusException_1_1MoteusPermissionsError.html",tooltip="This class is used when the computer does not have correct permissions to use the pi3hat for CAN..."];
+}
