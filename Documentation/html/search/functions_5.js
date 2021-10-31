@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['waituntilready',['waitUntilReady',['../classMoteus_1_1Moteus.html#a363a7881500b2ca7efccc6dfd64dca42',1,'Moteus::Moteus']]]
+  ['resetprintfunction',['resetPrintFunction',['../classMoteusException_1_1MoteusWarning.html#a4605b52a345e8ab33741981e51f36492',1,'MoteusException::MoteusWarning']]]
 ];

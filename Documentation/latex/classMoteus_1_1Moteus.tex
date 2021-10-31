@@ -39,6 +39,9 @@ def \hyperlink{classMoteus_1_1Moteus_a363a7881500b2ca7efccc6dfd64dca42}{wait\+Un
 \mbox{\Hypertarget{classMoteus_1_1Moteus_aea1163a7d229f8aa79b4f6c9db9a29e6}\label{classMoteus_1_1Moteus_aea1163a7d229f8aa79b4f6c9db9a29e6}} 
 {\bfseries raw\+Ids}
 \item 
+\mbox{\Hypertarget{classMoteus_1_1Moteus_a6ffa15416387e5eb8d20db582f34557d}\label{classMoteus_1_1Moteus_a6ffa15416387e5eb8d20db582f34557d}} 
+{\bfseries main\+Results}
+\item 
 \mbox{\Hypertarget{classMoteus_1_1Moteus_ac7e43da2bc7b1c2603047fd3490e5bc6}\label{classMoteus_1_1Moteus_ac7e43da2bc7b1c2603047fd3490e5bc6}} 
 {\bfseries motor\+\_\+states}
 \item 
@@ -51,16 +54,27 @@ def \hyperlink{classMoteus_1_1Moteus_a363a7881500b2ca7efccc6dfd64dca42}{wait\+Un
 \mbox{\Hypertarget{classMoteus_1_1Moteus_a5570b98715bc10f2c1455574c928a676}\label{classMoteus_1_1Moteus_a5570b98715bc10f2c1455574c928a676}} 
 {\bfseries states\+Lock}
 \item 
-\mbox{\Hypertarget{classMoteus_1_1Moteus_a6ffa15416387e5eb8d20db582f34557d}\label{classMoteus_1_1Moteus_a6ffa15416387e5eb8d20db582f34557d}} 
-{\bfseries main\+Results}
-\item 
 \mbox{\Hypertarget{classMoteus_1_1Moteus_a23432463cebd296f6421a5abfff369bb}\label{classMoteus_1_1Moteus_a23432463cebd296f6421a5abfff369bb}} 
 {\bfseries moteus\+\_\+thread}
+\item 
+\mbox{\Hypertarget{classMoteus_1_1Moteus_abef320e3c53318bb362a93547189b163}\label{classMoteus_1_1Moteus_abef320e3c53318bb362a93547189b163}} 
+{\bfseries sim\+\_\+thread}
+\item 
+\mbox{\Hypertarget{classMoteus_1_1Moteus_a02108bcbbb36f43aac866992f93470e4}\label{classMoteus_1_1Moteus_a02108bcbbb36f43aac866992f93470e4}} 
+{\bfseries values}
 \end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
 Class used to manipulate the \hyperlink{classMoteus_1_1Moteus}{Moteus} motor controllers via C\+AN using the Pi3\+Hat. 
+
+Implements functions in order to set the attributes of all the motors as well as get the current states
+
+Notes\+:
+\begin{DoxyItemize}
+\item Make sure that the motors C\+AN properties are configured properly
+\item Make sure to handle program the program being killed by using the \hyperlink{classMoteus_1_1Moteus_a2e5bafddee5cfb9833f14ebf5e12f354}{close\+Moteus()} method, which is used to clean the threading properly
+\end{DoxyItemize}
 
 \begin{DoxyAuthor}{Author}
 Jared Cohen (\href{mailto:cohen.jar@northeastern.edu}{\tt cohen.\+jar@northeastern.\+edu}) 

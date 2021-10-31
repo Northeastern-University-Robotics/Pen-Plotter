@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['setattributes',['setAttributes',['../classMoteus_1_1Moteus.html#a75698a813e2463f3c245a4b7fa07b2a0',1,'Moteus::Moteus']]]
+  ['isready',['isReady',['../classMoteus_1_1Moteus.html#a2e1ae006212c2b107a6b63478b1137cb',1,'Moteus::Moteus']]]
 ];
