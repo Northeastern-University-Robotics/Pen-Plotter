@@ -1,0 +1,81 @@
+\hypertarget{classMoteusException_1_1MoteusCanError}{}\section{Moteus\+Exception.\+Moteus\+Can\+Error Class Reference}
+\label{classMoteusException_1_1MoteusCanError}\index{Moteus\+Exception.\+Moteus\+Can\+Error@{Moteus\+Exception.\+Moteus\+Can\+Error}}
+
+
+The \hyperlink{classMoteusException_1_1MoteusCanError}{Moteus\+Can\+Error} is a more specific Moteus\+Error that alerts the user there is something wrong with the C\+AN configuration.  
+
+
+
+
+Inheritance diagram for Moteus\+Exception.\+Moteus\+Can\+Error\+:
+% FIG 0
+
+
+Collaboration diagram for Moteus\+Exception.\+Moteus\+Can\+Error\+:
+% FIG 1
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classMoteusException_1_1MoteusCanError_ae35e02b7c0d8b1fe68459fb3692f053b}{\+\_\+\+\_\+init\+\_\+\+\_\+} (self, raw\+Ids, ids)
+\begin{DoxyCompactList}\small\item\em The default constructor for the \hyperlink{classMoteusException_1_1MoteusCanError}{Moteus\+Can\+Error}. \end{DoxyCompactList}\item 
+def \hyperlink{classMoteusException_1_1MoteusCanError_a7f04a2580ed08614c838224e89992008}{has\+Duplicates} (arr)
+\begin{DoxyCompactList}\small\item\em This checks a list to see if it has any duplicates. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classMoteusException_1_1MoteusCanError_afd7945c7a219a2584b1a0f0630c174b9}{message}
+\begin{DoxyCompactList}\small\item\em Check to make sure there is not more than 5 can busses. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The \hyperlink{classMoteusException_1_1MoteusCanError}{Moteus\+Can\+Error} is a more specific Moteus\+Error that alerts the user there is something wrong with the C\+AN configuration. 
+
+As of now, it detects for three errors\+: Incorrect I\+Ds/\+Busses, duplicate I\+Ds, and too many C\+AN busses. It will automatically detect them. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classMoteusException_1_1MoteusCanError_ae35e02b7c0d8b1fe68459fb3692f053b}\label{classMoteusException_1_1MoteusCanError_ae35e02b7c0d8b1fe68459fb3692f053b}} 
+\index{Moteus\+Exception\+::\+Moteus\+Can\+Error@{Moteus\+Exception\+::\+Moteus\+Can\+Error}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!Moteus\+Exception\+::\+Moteus\+Can\+Error@{Moteus\+Exception\+::\+Moteus\+Can\+Error}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+init\+\_\+\+\_\+()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def Moteus\+Exception.\+Moteus\+Can\+Error.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{raw\+Ids,  }\item[{}]{ids,  }\item[{}]{None }\end{DoxyParamCaption})}
+
+
+
+The default constructor for the \hyperlink{classMoteusException_1_1MoteusCanError}{Moteus\+Can\+Error}. 
+
+It will automatically detect and output the correct issue, either duplicate I\+Ds, too many C\+AN busses, or incorrect Can I\+D/\+Bus ID \begin{DoxyVerb}       @param rawIds These are the CAN ids of the motors attached to the Pi3Hat.
+                   Is a list of lists, with each internal list representing the IDs of the motors attatched to that can drive
+                   For example, [[],[],[4]] means that on CAN bus 3, there is 1 motor with ID 4 attatched.
+
+       @param  ids This is a flattened down version of rawIds. For example, [[1,2],[3,4],[5,6]] -> [1,2,3,4,5,6]\end{DoxyVerb}
+ 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classMoteusException_1_1MoteusCanError_a7f04a2580ed08614c838224e89992008}\label{classMoteusException_1_1MoteusCanError_a7f04a2580ed08614c838224e89992008}} 
+\index{Moteus\+Exception\+::\+Moteus\+Can\+Error@{Moteus\+Exception\+::\+Moteus\+Can\+Error}!has\+Duplicates@{has\+Duplicates}}
+\index{has\+Duplicates@{has\+Duplicates}!Moteus\+Exception\+::\+Moteus\+Can\+Error@{Moteus\+Exception\+::\+Moteus\+Can\+Error}}
+\subsubsection{\texorpdfstring{has\+Duplicates()}{hasDuplicates()}}
+{\footnotesize\ttfamily def Moteus\+Exception.\+Moteus\+Can\+Error.\+has\+Duplicates (\begin{DoxyParamCaption}\item[{}]{arr }\end{DoxyParamCaption})}
+
+
+
+This checks a list to see if it has any duplicates. 
+
+Can be used for any list, but particularly it is meant to make sure there are no duplicate I\+Ds. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classMoteusException_1_1MoteusCanError_afd7945c7a219a2584b1a0f0630c174b9}\label{classMoteusException_1_1MoteusCanError_afd7945c7a219a2584b1a0f0630c174b9}} 
+\index{Moteus\+Exception\+::\+Moteus\+Can\+Error@{Moteus\+Exception\+::\+Moteus\+Can\+Error}!message@{message}}
+\index{message@{message}!Moteus\+Exception\+::\+Moteus\+Can\+Error@{Moteus\+Exception\+::\+Moteus\+Can\+Error}}
+\subsubsection{\texorpdfstring{message}{message}}
+{\footnotesize\ttfamily Moteus\+Exception.\+Moteus\+Can\+Error.\+message}
+
+
+
+Check to make sure there is not more than 5 can busses. 
+
+Create a copy of the ids and then set the arrays blank in order to keep shape for the returned errors. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+R\+O\+S/moteus/Moteus\+Exception.\+py\end{DoxyCompactItemize}

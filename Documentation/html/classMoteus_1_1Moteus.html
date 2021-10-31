@@ -116,6 +116,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:aea1163a7d229f8aa79b4f6c9db9a29e6"><td class="memItemLeft" align="right" valign="top"><a id="aea1163a7d229f8aa79b4f6c9db9a29e6"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>rawIds</b></td></tr>
 <tr class="separator:aea1163a7d229f8aa79b4f6c9db9a29e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ffa15416387e5eb8d20db582f34557d"><td class="memItemLeft" align="right" valign="top"><a id="a6ffa15416387e5eb8d20db582f34557d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>mainResults</b></td></tr>
+<tr class="separator:a6ffa15416387e5eb8d20db582f34557d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7e43da2bc7b1c2603047fd3490e5bc6"><td class="memItemLeft" align="right" valign="top"><a id="ac7e43da2bc7b1c2603047fd3490e5bc6"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>motor_states</b></td></tr>
 <tr class="separator:ac7e43da2bc7b1c2603047fd3490e5bc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -128,15 +131,23 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a5570b98715bc10f2c1455574c928a676"><td class="memItemLeft" align="right" valign="top"><a id="a5570b98715bc10f2c1455574c928a676"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>statesLock</b></td></tr>
 <tr class="separator:a5570b98715bc10f2c1455574c928a676"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ffa15416387e5eb8d20db582f34557d"><td class="memItemLeft" align="right" valign="top"><a id="a6ffa15416387e5eb8d20db582f34557d"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>mainResults</b></td></tr>
-<tr class="separator:a6ffa15416387e5eb8d20db582f34557d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23432463cebd296f6421a5abfff369bb"><td class="memItemLeft" align="right" valign="top"><a id="a23432463cebd296f6421a5abfff369bb"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>moteus_thread</b></td></tr>
 <tr class="separator:a23432463cebd296f6421a5abfff369bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abef320e3c53318bb362a93547189b163"><td class="memItemLeft" align="right" valign="top"><a id="abef320e3c53318bb362a93547189b163"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>sim_thread</b></td></tr>
+<tr class="separator:abef320e3c53318bb362a93547189b163"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02108bcbbb36f43aac866992f93470e4"><td class="memItemLeft" align="right" valign="top"><a id="a02108bcbbb36f43aac866992f93470e4"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>values</b></td></tr>
+<tr class="separator:a02108bcbbb36f43aac866992f93470e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class used to manipulate the <a class="el" href="classMoteus_1_1Moteus.html" title="Class used to manipulate the Moteus motor controllers via CAN using the Pi3Hat. ">Moteus</a> motor controllers via CAN using the Pi3Hat. </p>
+<p>Implements functions in order to set the attributes of all the motors as well as get the current states</p>
+<p>Notes:</p><ul>
+<li>Make sure that the motors CAN properties are configured properly</li>
+<li>Make sure to handle program the program being killed by using the <a class="el" href="classMoteus_1_1Moteus.html#a2e5bafddee5cfb9833f14ebf5e12f354" title="This will safely stop the operation of all of the motors. ">closeMoteus()</a> method, which is used to clean the threading properly</li>
+</ul>
 <dl class="section author"><dt>Author</dt><dd>Jared Cohen (<a href="#" onclick="location.href='mai'+'lto:'+'coh'+'en'+'.ja'+'r@'+'nor'+'th'+'eas'+'te'+'rn.'+'ed'+'u'; return false;">cohen<span style="display: none;">.nosp@m.</span>.jar<span style="display: none;">.nosp@m.</span>@nort<span style="display: none;">.nosp@m.</span>heas<span style="display: none;">.nosp@m.</span>tern.<span style="display: none;">.nosp@m.</span>edu</a>) </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>10/27/2021 </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>

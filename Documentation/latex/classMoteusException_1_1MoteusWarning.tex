@@ -1,0 +1,93 @@
+\hypertarget{classMoteusException_1_1MoteusWarning}{}\section{Moteus\+Exception.\+Moteus\+Warning Class Reference}
+\label{classMoteusException_1_1MoteusWarning}\index{Moteus\+Exception.\+Moteus\+Warning@{Moteus\+Exception.\+Moteus\+Warning}}
+
+
+\hyperlink{classMoteusException_1_1MoteusWarning}{Moteus\+Warning} class is used as a warning instead of an error.  
+
+
+
+
+Inheritance diagram for Moteus\+Exception.\+Moteus\+Warning\+:
+% FIG 0
+
+
+Collaboration diagram for Moteus\+Exception.\+Moteus\+Warning\+:
+% FIG 1
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classMoteusException_1_1MoteusWarning_aaf4c8f17344919a22170e3866fbef9e4}{\+\_\+\+\_\+init\+\_\+\+\_\+} (self, message=None)
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMoteusException_1_1MoteusWarning_af68079f6f69c3ea6d96d35104493621b}\label{classMoteusException_1_1MoteusWarning_af68079f6f69c3ea6d96d35104493621b}} 
+def \hyperlink{classMoteusException_1_1MoteusWarning_af68079f6f69c3ea6d96d35104493621b}{set\+Simulation\+Printing} ()
+\begin{DoxyCompactList}\small\item\em This function is useful for making all the prints have the prefix \char`\"{}\mbox{[}\+Simulation Mode\mbox{]}\+:\char`\"{}, although it only works in this thread so it is not necessarily useful. \end{DoxyCompactList}\item 
+def \hyperlink{classMoteusException_1_1MoteusWarning_af50b0a168529c9856e982fb6f5f314ee}{get\+Simulation\+Print\+Function} ()
+\begin{DoxyCompactList}\small\item\em This function gets the modified print function with the new simulation prefix. \end{DoxyCompactList}\item 
+def \hyperlink{classMoteusException_1_1MoteusWarning_aac19a61457cd87b430e92392c5ce1c04}{get\+Original\+Print} ()
+\begin{DoxyCompactList}\small\item\em Returns the original print function. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMoteusException_1_1MoteusWarning_a4605b52a345e8ab33741981e51f36492}\label{classMoteusException_1_1MoteusWarning_a4605b52a345e8ab33741981e51f36492}} 
+def \hyperlink{classMoteusException_1_1MoteusWarning_a4605b52a345e8ab33741981e51f36492}{reset\+Print\+Function} ()
+\begin{DoxyCompactList}\small\item\em Resets the print function to non-\/simulation mode if its needed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classMoteusException_1_1MoteusWarning_a0db4c8fb00f39bc3dbed9c81d95c9dc9}\label{classMoteusException_1_1MoteusWarning_a0db4c8fb00f39bc3dbed9c81d95c9dc9}} 
+{\bfseries message}
+\item 
+\mbox{\Hypertarget{classMoteusException_1_1MoteusWarning_af953a1afc885af0ef7bbd9164925a843}\label{classMoteusException_1_1MoteusWarning_af953a1afc885af0ef7bbd9164925a843}} 
+{\bfseries original\+Print}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{classMoteusException_1_1MoteusWarning}{Moteus\+Warning} class is used as a warning instead of an error. 
+
+Used for suggestions or if it is entering simulation mode 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classMoteusException_1_1MoteusWarning_aaf4c8f17344919a22170e3866fbef9e4}\label{classMoteusException_1_1MoteusWarning_aaf4c8f17344919a22170e3866fbef9e4}} 
+\index{Moteus\+Exception\+::\+Moteus\+Warning@{Moteus\+Exception\+::\+Moteus\+Warning}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!Moteus\+Exception\+::\+Moteus\+Warning@{Moteus\+Exception\+::\+Moteus\+Warning}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+init\+\_\+\+\_\+()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def Moteus\+Exception.\+Moteus\+Warning.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{message = {\ttfamily None} }\end{DoxyParamCaption})}
+
+
+
+Default constructor. 
+
+It will print the message given, or the default as described below \begin{DoxyVerb}       @param  message Will print the message, if it is left None it prints:
+           - "The Moteus initialization encountered errors so it is in Simulation Mode. To see the errors, disable Simulation Mode in the Moteus class constructor by setting simulation = false"\end{DoxyVerb}
+ 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classMoteusException_1_1MoteusWarning_aac19a61457cd87b430e92392c5ce1c04}\label{classMoteusException_1_1MoteusWarning_aac19a61457cd87b430e92392c5ce1c04}} 
+\index{Moteus\+Exception\+::\+Moteus\+Warning@{Moteus\+Exception\+::\+Moteus\+Warning}!get\+Original\+Print@{get\+Original\+Print}}
+\index{get\+Original\+Print@{get\+Original\+Print}!Moteus\+Exception\+::\+Moteus\+Warning@{Moteus\+Exception\+::\+Moteus\+Warning}}
+\subsubsection{\texorpdfstring{get\+Original\+Print()}{getOriginalPrint()}}
+{\footnotesize\ttfamily def Moteus\+Exception.\+Moteus\+Warning.\+get\+Original\+Print (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Returns the original print function. 
+
+\begin{DoxyReturn}{Returns}
+The print function that is normally used with python 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classMoteusException_1_1MoteusWarning_af50b0a168529c9856e982fb6f5f314ee}\label{classMoteusException_1_1MoteusWarning_af50b0a168529c9856e982fb6f5f314ee}} 
+\index{Moteus\+Exception\+::\+Moteus\+Warning@{Moteus\+Exception\+::\+Moteus\+Warning}!get\+Simulation\+Print\+Function@{get\+Simulation\+Print\+Function}}
+\index{get\+Simulation\+Print\+Function@{get\+Simulation\+Print\+Function}!Moteus\+Exception\+::\+Moteus\+Warning@{Moteus\+Exception\+::\+Moteus\+Warning}}
+\subsubsection{\texorpdfstring{get\+Simulation\+Print\+Function()}{getSimulationPrintFunction()}}
+{\footnotesize\ttfamily def Moteus\+Exception.\+Moteus\+Warning.\+get\+Simulation\+Print\+Function (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+This function gets the modified print function with the new simulation prefix. 
+
+\begin{DoxyReturn}{Returns}
+new print function with prefix 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+R\+O\+S/moteus/Moteus\+Exception.\+py\end{DoxyCompactItemize}

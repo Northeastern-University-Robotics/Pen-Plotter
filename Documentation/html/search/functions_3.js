@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['isready',['isReady',['../classMoteus_1_1Moteus.html#a2e1ae006212c2b107a6b63478b1137cb',1,'Moteus::Moteus']]]
+  ['hasduplicates',['hasDuplicates',['../classMoteusException_1_1MoteusCanError.html#a7f04a2580ed08614c838224e89992008',1,'MoteusException::MoteusCanError']]]
 ];

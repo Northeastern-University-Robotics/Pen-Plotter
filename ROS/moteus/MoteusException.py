@@ -13,18 +13,18 @@ from colorama import Fore, init
 init()
 
 class MoteusException(Exception):
-    """ This is the base class for all exceptions that have to do with Moteus motor controllers.
+    """This is the base class for all exceptions that have to do with Moteus motor controllers.
     """
     def __init__(self, message) -> None:
-        """ The constructor for all MoteusExceptions and child classes. Has a standard output message
-            
-            @param message  Used to print out the error message. The final printed message is: "Error with the Moteus Controllers: " + message
+        """The constructor for all MoteusExceptions and child classes. Has a standard output message.
+
+            @param  message  Used to print out the error message. The final printed message is: "Error with the Moteus Controllers: " + message
         """
         self.message = "Error with the Moteus Controllers: " + message
         super().__init__(self.message)
 
 class MoteusPermissionsError(MoteusException):
-    """ This class is used when the computer does not have correct permissions to use the pi3hat for CAN. Used because the error normally thrown does not offer solutions, wheras since we know the issue we can suggest solutions
+    """This class is used when the computer does not have correct permissions to use the pi3hat for CAN. Used because the error normally thrown does not offer solutions, wheras since we know the issue we can suggest solutions
     """
     def __init__(self) -> None:
         self.message = "The program does not have access to /dev/mem. Make sure you are you running this on the Raspberry Pi and have root permissions"
@@ -32,18 +32,18 @@ class MoteusPermissionsError(MoteusException):
 
 
 class MoteusCanError(MoteusException):
-    """ The MoteusCanError is a more specific MoteusError that alerts the user there is something wrong with the CAN configuration
+    """The MoteusCanError is a more specific MoteusError that alerts the user there is something wrong with the CAN configuration
 
         As of now, it detects for three errors: Incorrect IDs/Busses, duplicate IDs, and too many CAN busses. It will automatically detect them.
     """
     def __init__(self, rawIds, ids) -> None:
-        """ The default constructor for the MoteusCanError. It will automatically detect and output the correct issue, either duplicate IDs, too many CAN busses, or incorrect Can ID/Bus ID
+        """The default constructor for the MoteusCanError. It will automatically detect and output the correct issue, either duplicate IDs, too many CAN busses, or incorrect Can ID/Bus ID
 
-        @param rawIds These are the CAN ids of the motors attached to the Pi3Hat.
+            @param rawIds These are the CAN ids of the motors attached to the Pi3Hat.
                         Is a list of lists, with each internal list representing the IDs of the motors attatched to that can drive
                         For example, [[],[],[4]] means that on CAN bus 3, there is 1 motor with ID 4 attatched.
         
-        @param  ids This is a flattened down version of rawIds. For example, [[1,2],[3,4],[5,6]] -> [1,2,3,4,5,6]
+            @param  ids This is a flattened down version of rawIds. For example, [[1,2],[3,4],[5,6]] -> [1,2,3,4,5,6]
         """
 
         if(len(ids) > 5): ##Check to make sure there is not more than 5 can busses
@@ -112,12 +112,12 @@ class MoteusCanError(MoteusException):
         
 
 class MoteusWarning(UserWarning):
-    """ MoteusWarning class is used as a warning instead of an error. Used for suggestions or if it is entering simulation mode
+    """MoteusWarning class is used as a warning instead of an error. Used for suggestions or if it is entering simulation mode
     """
     def __init__(self, message = None):
-        """ Default constructor. It will print the message given, or the default as described below
+        """Default constructor. It will print the message given, or the default as described below
 
-        @param  message Will print the message, if it is left None it prints:
+            @param  message Will print the message, if it is left None it prints:
                 - "The Moteus initialization encountered errors so it is in Simulation Mode. To see the errors, disable Simulation Mode in the Moteus class constructor by setting simulation = false"
         """
         if(message is None):
@@ -128,7 +128,7 @@ class MoteusWarning(UserWarning):
         self.originalPrint = print
 
     def setSimulationPrinting():
-        """ This function is useful for making all the prints have the prefix "[Simulation Mode]:", although it only works in this thread
+        """This function is useful for making all the prints have the prefix "[Simulation Mode]:", although it only works in this thread
             so it is not necessarily useful.
         """
         global print
@@ -137,9 +137,9 @@ class MoteusWarning(UserWarning):
             builtins.print(my_prefix, *objs, **kwargs)
 
     def getSimulationPrintFunction():
-        """ This function gets the modified print function with the new simulation prefix
+        """This function gets the modified print function with the new simulation prefix
 
-        @return new print function with prefix
+            @return new print function with prefix
         """
         def print(*objs, **kwargs):
             my_prefix = Fore.YELLOW + "[Simulation Mode]: " + Fore.RESET
@@ -147,20 +147,20 @@ class MoteusWarning(UserWarning):
         return print
 
     def getOriginalPrint():
-        """ Returns the original print function
+        """Returns the original print function
 
-        @return The print function that is normally used with python
+            @return The print function that is normally used with python
         """
         return builtins.print
 
     def resetPrintFunction():
-        """ Resets the print function to non-simulation mode if its needed
+        """Resets the print function to non-simulation mode if its needed
         """
         global print
         print = builtins.print
 
 def set_highlighted_excepthook():
-    """ This method simply makes the output of the terminal colorful and easier to look at, makes errors a lot clearer and easier to read
+    """This method simply makes the output of the terminal colorful and easier to look at, makes errors a lot clearer and easier to read
 
         The downside is if this file is not implemented, this method will also be missing and therefore no pretty colors :(
     """
