@@ -8,7 +8,6 @@ More details
 from asyncio.tasks import sleep
 import moteus
 from moteus.moteus import Controller
-import moteus_pi3hat
 import asyncio
 from threading import Thread
 from threading import Lock
@@ -18,6 +17,13 @@ import traceback
 from copy import deepcopy
 
 from MoteusException import *
+
+
+sim_flag = False
+try:
+    import moteus_pi3hat
+except:
+    sim_flag = True
 
 class Moteus:
     """Class used to manipulate the Moteus motor controllers via CAN using the Pi3Hat
@@ -60,10 +66,14 @@ class Moteus:
 
         self.mainResults = []
 
+        global sim_flag
+
         if(MoteusCanError.hasDuplicates(self.rawIds)):
             self.mainResults.append(MoteusCanError(self.rawIds, self.ids))
         elif(len(self.ids) > 5):
             self.mainResults.append(MoteusCanError(self.rawIds, self.ids))
+        elif(sim_flag):
+            self.mainResults.append(MoteusPermissionsError(message="Could not import moteus_pi3hat. Make sure it is installed via pip"))
 
         self.motor_states = {} #This will be the position, velocity, and torque to set to each individual motor.
         for id in self.rawIds:
@@ -399,7 +409,7 @@ class Moteus:
             sleep(0.1)
         
 if __name__ == '__main__':
-    m = Moteus(ids=[[],[],[2], [], [], [], []])
+    m = Moteus(ids=[[],[],[2]], simulation=True)
     to = 0.03
     m.setAttributes(2, pos=100, velocity = 0.2, torque=to)
     torques = []
