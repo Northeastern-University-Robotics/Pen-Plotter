@@ -28,14 +28,14 @@ generate_messages(
 
 # Allow CMake to mark raspberry_controls.py to be executable
 # instead of having everybody do 'chmod +x raspberry_controls.py'
-catkin_install_python(PROGRAMS src/raspberrypi/raspberry_controls.py
+catkin_install_python(PROGRAMS src/raspberry_controls.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 # ----- C++ Specific -----
 
 # Describe the C++ compilation process to CMake 
 include_directories(include ${catkin_INCLUDE_DIRS})
-add_executable(nuc_motor_controls src/nuc/nuc_motor_controls.cpp)
+add_executable(nuc_motor_controls src/nuc_motor_controls.cpp)
 target_link_libraries(nuc_motor_controls ${catkin_LIBRARIES})
 
 # Declare the package as a catkin project

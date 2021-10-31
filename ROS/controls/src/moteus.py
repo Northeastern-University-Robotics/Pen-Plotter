@@ -17,6 +17,7 @@ import traceback
 from copy import deepcopy
 
 
+
 class Moteus:
     """Class used to manipulate the Moteus motor controllers via CAN using the Pi3Hat
         @author Jared Cohen (cohen.jar@northeastern.edu)

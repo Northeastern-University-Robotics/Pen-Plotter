@@ -2,7 +2,8 @@ from typing import List
 from controls.msg import MotorOrientation
 from motor_descriptor import MoteusMotorDescriptor
 import rospy
-import raspberrypi.moteus
+import moteus
+import controls_constants as constants
 
 class RaspberryPiMoteusWrapper:
     """
@@ -14,7 +15,6 @@ class RaspberryPiMoteusWrapper:
 
     You specify the configuration of each motor that is in control
     by supplying a 'MoteusMotorDescriptor' for each of the motors
-
 
     Each instance of the RaspberryPiMoteusWrapper services a
     fixed number of motors; you cannot change the number
@@ -32,7 +32,7 @@ class RaspberryPiMoteusWrapper:
     Attributes
     ----------
     hw_refresh_rate : float
-        The rate, in Hertz, at which the moteus hardware is queried
+        The rate, in seconds, at which the moteus hardware is queried
         for state changes
 
     num_motors : int
@@ -54,19 +54,9 @@ class RaspberryPiMoteusWrapper:
         on the ROS topic about the current orientation of the motors
     """
 
-    # The maximum number of ROS messages that are buffered
-    # by both the publisher and subscibers created by this instance
-    QUEUE_SIZE = 10
-
-    # The name of the topic the nodes created by this class subscribe to
-    SUBSCR_TOPIC_NAME = 'desired_orientation'
-
-    # The name of the topic the nodes created by this class publish to
-    PUB_TOPIC_NAME = 'current_orientation'
-
     # MARK: - Constructors -
 
-    def __init__(self, motor_list: List[MoteusMotorDescriptor], hw_refresh_rate: float = 0.016):
+    def __init__(self, motor_list: List[MoteusMotorDescriptor], hw_refresh_rate: float = constants.CONTROLS_PKG_DEFAULT_HW_REFRESH_RATE):
         """Construct a new wrapper around the Moteus class
 
         @param motor_list: A list of descriptors describing how each motor is arranged
@@ -105,16 +95,16 @@ class RaspberryPiMoteusWrapper:
         self.moteus_instance = moteus.Moteus(moteus_ids)
 
         self.desired_orientation_sub = rospy.Subscriber(
-            'desired_orientation',
+            constants.CONTROLS_PKG_DESIRED_ORIENTATION_TOPIC,
             MotorOrientation,
             callback=self.__desired_orientation_callback,
-            queue_size=RaspberryPiMoteusWrapper.QUEUE_SIZE
+            queue_size=constants.CONTROLS_PKG_SUBSCRIBER_QUEUE_SIZE
         )
 
         self.current_orientation_publisher = rospy.Publisher(
-            'current_orientation',
+            constants.CONTROLS_PKG_CURRENT_ORIENTATION_TOPIC,
             MotorOrientation,
-            queue_size=RaspberryPiMoteusWrapper.QUEUE_SIZE
+            queue_size=constants.CONTROLS_PKG_PUBLISHER_QUEUE_SIZE
         )
 
     # MARK: - Methods -
@@ -153,7 +143,7 @@ class RaspberryPiMoteusWrapper:
         """
         rate = rospy.Rate(self.hw_refresh_rate)
 
-        # Wait until the motors are ready (if they already aren't)
+        # Wait until the motors are ready (if they aren't already)
         self.moteus_instance.waitUntilReady()
 
         while (not rospy.is_shutdown()):
@@ -187,7 +177,13 @@ class RaspberryPiMoteusWrapper:
         pub_to = 'publishing to: ' + RaspberryPiMoteusWrapper.PUB_TOPIC_NAME
         return name + subscribed_to + pub_to
 
-
 if __name__ == 'main':
-    wrapper = RaspberryPiMoteusWrapper(names=['left-motor'], hw_refresh_rate=0.1)
+    motor_left = MoteusMotorDescriptor('left-motor', 1, 0)
+    motor_middle = MoteusMotorDescriptor('middle-motor', 2, 1)
+    motor_right = MoteusMotorDescriptor('right-motor', 3, 1)
+
+    wrapper = RaspberryPiMoteusWrapper(
+        motor_list=[motor_left, motor_middle, motor_right], 
+        hw_refresh_rate=0.1
+    )
     wrapper.run_motor_orientation_loop()

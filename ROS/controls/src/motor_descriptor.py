@@ -12,7 +12,7 @@ class MoteusMotorDescriptor:
     the CAN communication protocol
     """
 
-    def __init__(self, name, can_bus_lane_id, hardware_id):
+    def __init__(self, name, hardware_id, can_bus_lane_id):
         """Creates a new descriptor for a motor with then given
         human-readable name _name_ and CAN communication information
 
