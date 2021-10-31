@@ -3,7 +3,10 @@ from copy import deepcopy
 import moteus
 import asyncio
 import nest_asyncio
-import moteus_pi3hat
+try:
+    import moteus_pi3hat #Errors installing lead this to need to be done. Do not run this file standalone
+except:
+    pass
 import warnings
 import builtins
 
@@ -26,8 +29,11 @@ class MoteusException(Exception):
 class MoteusPermissionsError(MoteusException):
     """This class is used when the computer does not have correct permissions to use the pi3hat for CAN. Used because the error normally thrown does not offer solutions, wheras since we know the issue we can suggest solutions
     """
-    def __init__(self) -> None:
-        self.message = "The program does not have access to /dev/mem. Make sure you are you running this on the Raspberry Pi and have root permissions"
+    def __init__(self, message = None) -> None:
+        if(message is None):
+            self.message = "The program does not have access to /dev/mem. Make sure you are you running this on the Raspberry Pi and have root permissions"
+        else:
+            self.message = message
         super().__init__(self.message)
 
 
