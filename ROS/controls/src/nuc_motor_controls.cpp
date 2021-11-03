@@ -3,12 +3,12 @@
 #include "controls/MotorOrientation.h"
 
 int main(int argc, const char **argv) { 
-    printf("This is a test\n");
+   //printf("This is a test\n");
 
-    controls::MotorOrientation o;
-    o.numMotors = 100;
+    //controls::MotorOrientation o;
+    //o.numMotors = 100;
 
-    printf("%d\n", o.numMotors);
+   // printf("%d\n", o.numMotors);
 
     return 0;
 }

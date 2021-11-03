@@ -10,8 +10,6 @@ except:
 import warnings
 import builtins
 
-
-
 from colorama import Fore, init
 init()
 

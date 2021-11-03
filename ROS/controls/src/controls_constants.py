@@ -17,4 +17,10 @@ CONTROLS_PKG_CURRENT_ORIENTATION_TOPIC = 'current_orientation'
 
 # The default rate at which the Moteus motors are queried
 # for their current state (defaults to 60 times a second)
-CONTROLS_PKG_DEFAULT_HW_REFRESH_RATE = 0.0166
+CONTROLS_PKG_DEFAULT_HW_REFRESH_RATE = 60
+
+# A mapping of the Moteus motor IDs with CAN bus lanes
+CONTROLS_PKG_BUS_CONFIGURATION = {1 : 0, 2 : 0}
+
+# The name of the node that runs on the RaspberryPi
+CONTROLS_PKG_RASPBERRYPI_NODE_NAME = 'controls_raspberrypi_node'

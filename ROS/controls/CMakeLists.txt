@@ -10,6 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   geometry_msgs
   message_generation
+  roslaunch
 )
 
 # This macro sets up the Python modules (for message generation)
@@ -20,6 +21,7 @@ catkin_python_setup()
 add_message_files(
   FILES
   MotorOrientation.msg
+  MotorState.msg
 )
 generate_messages(
   DEPENDENCIES
@@ -30,6 +32,9 @@ generate_messages(
 # instead of having everybody do 'chmod +x raspberry_controls.py'
 catkin_install_python(PROGRAMS src/raspberry_controls.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+# Allow catkin_make to check *.launch files for errors
+roslaunch_add_file_check(launch)
 
 # ----- C++ Specific -----
 
