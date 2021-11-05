@@ -39,6 +39,9 @@ class MotorControls{
     void desiredCallback(const geometry_msgs::Point::ConstPtr& location){
         if ros::ok(){
             this->desired_pub.publish(desiredDirection(&motor_orientation,&location));
+            ros::spinOnce();
+            loop_rate.sleep();
+
         }
     }
 

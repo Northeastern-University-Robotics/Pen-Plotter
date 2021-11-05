@@ -52,8 +52,9 @@ private:
      * desiredDirection is called to transform cartesian coordinates into motor orientation messages
      */
     void orientationCallback(const msgs::motor_orientation::ConstPtr& msg);
-    void desiredCallback(const msgs::motor_orientation::ConstPtr& msg));
-    float desiredDirection(msgs::motor_orientation msg, geometry_msgs::Point location);
+    void desiredCallback(const msgs::motor_orientation::ConstPtr& location));
+    void initializeCoordinates(geometry_msgs::Point::ConstPtr& initial);
+    msgs::MotorOrientation desiredDirection(msgs::MotorOrientation::ConstPtr& msg, geometry_msgs::Point::ConstPtr& location);
     int main();
 
 public:
