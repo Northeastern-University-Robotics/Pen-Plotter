@@ -1,5 +1,5 @@
 #include "ros/ros.h"
-#include "../msgs/motor_orientation.msg"
+#include "../msgs/MotorOrientation.msg"
 #include "nuc_motor_controls.h"
 #include <vector>
 #include <cmath>
@@ -16,11 +16,14 @@ class MotorControls{
 
         /*This instantiates the nodehandle class as well as the publisher and subscruber
          *current_sub is the subscriber to current_orientation from the raspberry pi, which contains the current number of motors, and their positions
+         *desired_sub is the subscriber to the desired position delta from the controls
          *desired_pub is the publisher to desired_orientation, which is sent to the pi, which contains the desired number of motors and positions
          */
-        this->nh = ros::NodeHandle();
-        this->current_sub = this ->nh.subscribe("current_orientation", 1000, &nuc_motor_controls::orientationCallback, this);
-        this->desired_pub = this->nh.advertise<msgs::motor_orientation>("desired_orientation", 1000);
+        this->pi_nh = ros::NodeHandle("Pi_node");
+        this->desired_nh = ros::NodeHandle("Desired_node");
+        this->current_sub = this->nh.subscribe("current_orientation", 1000, &nuc_motor_controls::orientationCallback, this);
+        this->desired_sub = this->desired_nh.subscribe("desired_position", 1000, &nuc_motor_controls::desiredCallback, this);
+        this->desired_pub = this->nh.advertise<msgs::MotorOrientation>("desired_orientation", 1000);
 
         ros::Rate loop_rate(10);
 
@@ -28,17 +31,37 @@ class MotorControls{
 
     }
     /*
-     * orientationCallback is called when the subscriber gets the current orientation 
-     * it then calls desiredDirection to find the desired direction
-     * It publishes the new direction to desired_orientation, and sends the message
+     * desiredCallback is called when the subscriber gets the desired direction 
+     * it then calls desiredDirection to find the orientation
+     * It publishes the new orientation to desired_orientation, and sends the message
      * 
      */
-    void orientationCallback(const msgs::motor_orientation::ConstPtr& msg){
+    void desiredCallback(const geometry_msgs::Point::ConstPtr& location){
         if ros::ok(){
-            this->desired_pub.publish(msg);
-            ros::spinOnce();
-            loop_rate.sleep();
+            this->desired_pub.publish(desiredDirection(&motor_orientation,&location));
         }
+    }
+
+    /*
+     * orientationCallback is called when the subscriber gets the current orientation 
+     * it then updates the motor orientation stored in the class
+     * 
+     */
+    void orientationCallback(const msgs::MotorOrientation::ConstPtr& msg){
+        if ros::ok(){
+            motor_orientation->numMotors = msg->numMotors;
+            motor_orientation->states = msg->states;
+        }
+    }
+    
+    /*
+     *This function is called on startup, and it gets the _0 variables
+     */
+    void initializeCoordinates(geometry_msgs::Point::ConstPtr& initial){
+        r_0[0] = sqrt(pow(*initial.y,2)+pow(*initial.x,2) - pow(rm,2));
+        r_1[1] = sqrt(pow(x2 - *initial.x,2)+pow(*initial.x,2) - pow(rm,2));
+        angle_0[0] = atan(*initial.y/(*initial.x)) + asin(sqrt(pow(*initial.x,2)+pow(*initial.x,2) - pow(rm,2))/sqrt(pow(*initial.x,2)+pow(*initial.x,2)));
+        angle_0[1] = atan(*initial.y/(x2-*initial.x)) + asin(sqrt(pow(*initial.x,2)+pow(*initial.x,2) - pow(rm,2))/sqrt(pow(*initial.x,2)+pow(*initial.x,2)));
     }
 
     /*
@@ -46,7 +69,12 @@ class MotorControls{
      * Should input the desired direction in cartesian coordinates and output the desired motor orientation in relation to the motors
      * 
      */
-    float desiredDirection(msgs::motor_orientation msg, geometry_msgs::Point location){
+    msgs::MotorOrientation desiredDirection(msgs::MotorOrientation::ConstPtr& msg, geometry_msgs::Point::ConstPtr& location){
+        
+        loc.x += location->x;
+        loc.y += location->y;
+        loc.z += location_.z;
+        point_log.push(loc);
         /*
         geometry_msgs::Point loc = location;
         float rm = .1;
@@ -66,7 +94,25 @@ class MotorControls{
         float posm1 = (r1-r10)/rm - angle1p + angle10;
         desired_msg.attributes
         */
-       return 0.0;
+        
+
+        angle_m[0] =(sqrt(pow(loc.x,2)+pow(loc.x,2) - pow(rm,2))- r_0[0])/rm 
+                - atan(loc.y/loc.x) 
+                + asin(sqrt(pow(loc.x,2)+pow(loc.x,2) - pow(rm,2))/
+                        sqrt(pow(loc.x,2)+pow(loc.x,2))) + angle_0[0];
+        angle_m[1]=(sqrt(pow(loc.x,2)+pow(loc.x,2) - pow(rm,2))-r_0[1])/rm 
+                - atan(loc.y/loc.x) 
+                + asin(sqrt(pow(loc.x,2)+pow(loc.x,2) - pow(rm,2))/
+                        sqrt(pow(loc.x,2)+pow(loc.x,2))) + angle_0[1];
+        msgs::MotorOrientation desired_orientation = *msg;
+
+        for(int i = 0; i< desired_orientation->numMotors; i++){
+            desired_orientation->states[i]->position += angle_m[i];
+        }
+
+
+        return desired_orientation;
+ 
     }
 
     /*
