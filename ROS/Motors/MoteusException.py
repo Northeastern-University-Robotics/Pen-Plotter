@@ -4,6 +4,7 @@ import moteus
 import asyncio
 import nest_asyncio
 try:
+<<<<<<< HEAD:ROS/Motors/MoteusException.py
     import moteus_pi3hat
 except:
     pass

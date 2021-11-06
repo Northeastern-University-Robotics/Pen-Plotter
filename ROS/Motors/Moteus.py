@@ -25,6 +25,13 @@ try:
 except:
     sim_flag = True
 
+
+sim_flag = False
+try:
+    import moteus_pi3hat
+except:
+    sim_flag = True
+
 class Moteus:
     """Class used to manipulate the Moteus motor controllers via CAN using the Pi3Hat
 
