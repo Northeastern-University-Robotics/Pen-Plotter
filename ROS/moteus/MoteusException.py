@@ -4,7 +4,7 @@ import moteus
 import asyncio
 import nest_asyncio
 try:
-    import moteus_pi3hat #Errors installing lead this to need to be done. Do not run this file standalone
+    import moteus_pi3hat
 except:
     pass
 import warnings
@@ -48,7 +48,7 @@ class MoteusCanError(MoteusException):
             @param rawIds These are the CAN ids of the motors attached to the Pi3Hat.
                         Is a list of lists, with each internal list representing the IDs of the motors attatched to that can drive
                         For example, [[],[],[4]] means that on CAN bus 3, there is 1 motor with ID 4 attatched.
-        
+
             @param  ids This is a flattened down version of rawIds. For example, [[1,2],[3,4],[5,6]] -> [1,2,3,4,5,6]
         """
 
@@ -71,7 +71,7 @@ class MoteusCanError(MoteusException):
         cur_id = 1
 
         loop = asyncio.get_event_loop() #get the event loop for later
-                
+
 
         for _id in rawIds:
             servo_bus_map = {} #Servo bus map is for the pi3hat router in order to know which motors are on which CAN bus
@@ -85,7 +85,7 @@ class MoteusCanError(MoteusException):
                             cur_bus = i
                     servo_bus_map[i+1] = bus_ids #Set the bus dictionary index to the ids
 
-                
+
             transport = moteus_pi3hat.Pi3HatRouter( #Create a router using the servo bus map
                 servo_bus_map = servo_bus_map
             )
@@ -93,15 +93,15 @@ class MoteusCanError(MoteusException):
             servos = {} #Go through all of the motors and create the moteus.Controller objects associated with them
             for id in rawIds:
                 servos[id] = moteus.Controller(id = id, transport=transport)
-            
+
 
             async def testMotor(): #function in order to test the single motor. If results aren't returned, the ID is incorrect. If it is wrong, the id is appended to the errors list
                 results = await transport.cycle([x.make_stop(query=True) for x in servos.values()])
                 if(len(results) == 0):
                     errors[cur_bus].append(cur_id)
-                
-                
-            
+
+
+
             loop.run_until_complete(testMotor()) #For each ID, test it to make sure it is error free
 
         #Create the messsage and call the parent MoteusException class
@@ -115,7 +115,7 @@ class MoteusCanError(MoteusException):
             return True
         else:
             return False
-        
+
 
 class MoteusWarning(UserWarning):
     """MoteusWarning class is used as a warning instead of an error. Used for suggestions or if it is entering simulation mode
