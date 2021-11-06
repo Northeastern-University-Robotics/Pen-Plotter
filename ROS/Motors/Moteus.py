@@ -16,7 +16,7 @@ from time import sleep
 import traceback
 from copy import deepcopy
 
-from MoteusException import *
+from .MoteusException import *
 
 
 sim_flag = False
@@ -98,7 +98,7 @@ class Moteus:
                 self.isReady = False
                 self.mainResults = []
 
-                warnings.warn(None, MoteusWarning) #Create a warning and set the simulation prefix for all prints from now on, to make sure user is aware
+                warnings.warn("", MoteusWarning) #Create a warning and set the simulation prefix for all prints from now on, to make sure user is aware
                 global print
                 print = MoteusWarning.getSimulationPrintFunction()
                 
@@ -272,13 +272,13 @@ class Moteus:
                 unparsed.append(
                     sim_results(
                     {
-                        0x0:"Simulation",
+                        0x0: -1,
                         0x1:self.motor_states[motor]["position"],
                         0x2:self.motor_states[motor]["velocity"],
                         0x3:self.motor_states[motor]["torque"],
                         0x00d: 0,
                         0x00e: 0,
-                        0x00f: []
+                        0x00f: -1
                     })
                 )
             return unparsed

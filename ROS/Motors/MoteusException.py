@@ -126,7 +126,7 @@ class MoteusWarning(UserWarning):
             @param  message Will print the message, if it is left None it prints:
                 - "The Moteus initialization encountered errors so it is in Simulation Mode. To see the errors, disable Simulation Mode in the Moteus class constructor by setting simulation = false"
         """
-        if(message is None):
+        if(message is None or message == ""):
             message = "The Moteus initialization encountered errors so it is in Simulation Mode. To see the errors, disable Simulation Mode in the Moteus class constructor by setting simulation = false"
             MoteusWarning.setSimulationPrinting()
         self.message = Fore.LIGHTRED_EX + "Warning: " + Fore.YELLOW +  message + Fore.RESET
