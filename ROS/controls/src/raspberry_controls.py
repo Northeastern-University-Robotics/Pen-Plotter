@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 from typing import List
+import rospy
 from controls.msg import MotorOrientation
 from controls.msg import MotorState
-import rospy
 import controls_constants as constants
 import sys
 from Moteus import Moteus
@@ -87,7 +87,7 @@ class RaspberryPiMoteusWrapper:
             moteus_ids[can_bus_lane_id].append(motor_id)
 
         # Note that the call to the initializer will block
-        self.moteus_instance = mot.Moteus(moteus_ids, simulation=True)
+        self.moteus_instance = Moteus(moteus_ids, simulation=True)
 
         self.desired_orientation_sub = rospy.Subscriber(
             constants.CONTROLS_PKG_DESIRED_ORIENTATION_TOPIC,
