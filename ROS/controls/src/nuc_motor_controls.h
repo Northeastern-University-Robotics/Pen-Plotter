@@ -1,7 +1,10 @@
 #include "ros/ros.h"
-#include "../msgs/MotorOrientation.msg"
-#include "../msgs/MotorState.msg"
-#include <vector>;
+#include "controls/MotorOrientation.h"
+#include "controls/MotorState.h"
+#include "geometry_msgs/Point.h"
+
+#include <vector>
+#include <cmath>
 
 class MotorControls{
 
@@ -26,9 +29,9 @@ private:
      * @param loc takes in the xy position
      */
 
-    //std::vector<geometry_msgs::Point> point_log;
+    std::vector<geometry_msgs::Point> point_log;
 
-    msgs::MotorOrientation motor_orientation;
+    controls::MotorOrientation motor_orientation;
  //   long numMotors;
  //   MotorState[] states;
     geometry_msgs::Point loc;
@@ -51,12 +54,16 @@ private:
      * OrientationCallback runs after the subscriber gets a message
      * desiredDirection is called to transform cartesian coordinates into motor orientation messages
      */
-    void orientationCallback(const msgs::motor_orientation::ConstPtr& msg);
-    void desiredCallback(const msgs::motor_orientation::ConstPtr& location));
-    void initializeCoordinates(geometry_msgs::Point::ConstPtr& initial);
-    msgs::MotorOrientation desiredDirection(msgs::MotorOrientation::ConstPtr& msg, geometry_msgs::Point::ConstPtr& location);
+
+
+    void orientationCallback(const controls::MotorOrientation::ConstPtr& msg);
+    void desiredCallback(const geometry_msgs::Point::ConstPtr& location);
+    void initializeCoordinates(geometry_msgs::Point& initial);
+    controls::MotorOrientation desiredDirection(const geometry_msgs::Point::ConstPtr& location);
     int main();
 
 public:
+
     MotorControls(int argc, char **argv);  
+    
 };
