@@ -40,7 +40,7 @@ roslaunch_add_file_check(launch)
 
 # Describe the C++ compilation process to CMake 
 include_directories(include ${catkin_INCLUDE_DIRS})
-add_executable(nuc_motor_controls src/nuc_motor_controls.cpp)
+add_executable(nuc_motor_controls src/nuc_motor_controls.cpp src/main.cpp)
 target_link_libraries(nuc_motor_controls ${catkin_LIBRARIES})
 
 # Declare the package as a catkin project

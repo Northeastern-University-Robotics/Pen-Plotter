@@ -97,12 +97,7 @@ class Moteus:
                 self.exitFlag = False #Reset all of the variables
                 self.isReady = False
                 self.mainResults = []
-
-<<<<<<< HEAD:ROS/controls/src/Moteus.py
                 warnings.warn("Simulation mode for Moteus", MoteusWarning) #Create a warning and set the simulation prefix for all prints from now on, to make sure user is aware
-=======
-                warnings.warn("", MoteusWarning) #Create a warning and set the simulation prefix for all prints from now on, to make sure user is aware
->>>>>>> origin/main:ROS/Motors/Moteus.py
                 global print
                 print = MoteusWarning.getSimulationPrintFunction()
                 
