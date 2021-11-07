@@ -5,7 +5,7 @@ from controls.msg import MotorOrientation
 from controls.msg import MotorState
 import controls_constants as constants
 import sys
-from Moteus import Moteus
+from Motors.Moteus import Moteus
 
 class RaspberryPiMoteusWrapper:
     """

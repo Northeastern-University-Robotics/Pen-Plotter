@@ -30,7 +30,7 @@ generate_messages(
 
 # Allow CMake to mark raspberry_controls.py to be executable
 # instead of having everybody do 'chmod +x raspberry_controls.py'
-catkin_install_python(PROGRAMS src/raspberry_controls.py
+catkin_install_python(PROGRAMS src/moteus_wrapper.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 # Allow catkin_make to check *.launch files for errors

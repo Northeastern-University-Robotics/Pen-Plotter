@@ -1,9 +1,9 @@
 from copy import deepcopy
-import moteus
 import asyncio
 import nest_asyncio
 try:
     import moteus_pi3hat
+    import moteus
 except:
     pass
 import warnings
