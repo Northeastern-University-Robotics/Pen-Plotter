@@ -2,6 +2,7 @@ from copy import deepcopy
 import asyncio
 import nest_asyncio
 try:
+    import moteus
     import moteus_pi3hat
     import moteus
 except:

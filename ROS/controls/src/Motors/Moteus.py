@@ -19,6 +19,8 @@ from .MoteusException import *
 
 sim_flag = False
 try:
+    import moteus
+    from moteus.moteus import Controller
     import moteus_pi3hat
     import moteus
     from moteus.moteus import Controller
