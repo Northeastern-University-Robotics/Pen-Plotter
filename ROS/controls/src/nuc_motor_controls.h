@@ -17,8 +17,8 @@ private:
      *@param desired_sub subscribes to the desired motor orientation from the publishers
      *@param current_pub publishes to the raspberry pi the desired motor orientation
      */ 
-    ros::NodeHandle pi_nh;
-    ros::NodeHandle desired_nh;
+    ros::NodeHandle nh;
+    // ONLY ONE NODE HANDLE PER ROS SCRIPT
     ros::Subscriber current_sub;
     ros::Subscriber desired_sub;
     ros::Publisher desired_pub;
@@ -35,6 +35,7 @@ private:
  //   long numMotors;
  //   MotorState[] states;
     geometry_msgs::Point loc;
+    
 
     /*
      * variables for the calculatrion of the position
@@ -60,7 +61,6 @@ private:
     void desiredCallback(const geometry_msgs::Point::ConstPtr& location);
     void initializeCoordinates(geometry_msgs::Point& initial);
     controls::MotorOrientation desiredDirection(const geometry_msgs::Point::ConstPtr& location);
-    int main();
 
 public:
 

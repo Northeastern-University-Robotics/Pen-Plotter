@@ -1,7 +1,5 @@
-#include "ros/ros.h"
 #include "nuc_motor_controls.h"
-
-
+//#include <cstdio>
 
 /* Constructs a new motor controls class 
  * This class handles the calculation of transformation between cartesian and motor coordinates
@@ -9,22 +7,18 @@
    
 MotorControls::MotorControls(int argc, char **argv){
 
-    ros::init(argc, argv, "Nuc");
-
+    //std::cout<<"initialize_ROS";
     /*This instantiates the nodehandles  as well as the publisher and subscruber
     *current_sub is the subscriber to current_orientation from the raspberry pi, which contains the current number of motors, and their positions
     *desired_sub is the subscriber to the desired position delta from the controls
     *desired_pub is the publisher to desired_orientation, which is sent to the pi, which contains the desired number of motors and positions
     */
-    this->pi_nh = ros::NodeHandle("Pi_node");
-    this->desired_nh = ros::NodeHandle("Desired_node");
-    this->current_sub = this->pi_nh.subscribe("current_orientation", 1000, &MotorControls::orientationCallback, this);
-    this->desired_sub = this->desired_nh.subscribe("desired_position", 1000, &MotorControls::desiredCallback, this);
-    this->desired_pub = this->pi_nh.advertise<controls::MotorOrientation>("desired_orientation", 1000);
+    nh = ros::NodeHandle("Nuc");
+
+    current_sub = nh.subscribe("current_orientation", 1000, &MotorControls::orientationCallback, this);
+    desired_sub = nh.subscribe("desired_position", 1000, &MotorControls::desiredCallback, this);
+    desired_pub = nh.advertise<controls::MotorOrientation>("desired_orientation", 1000);
     ros::Rate loop_rate(10);
-
-
-
 }
 /*
 * desiredCallback is called when the subscriber gets the desired direction from perception/frontend
@@ -35,8 +29,12 @@ MotorControls::MotorControls(int argc, char **argv){
 void MotorControls::desiredCallback(const geometry_msgs::Point::ConstPtr& location){
     if (ros::ok()){
         this->desired_pub.publish(desiredDirection(location));
-        ros::spinOnce();
-        loop_rate.sleep();
+
+        // you don't call ros spin from within a callback file
+        ////------------
+        //ros::spinOnce();
+        //loop_rate.sleep();
+        //--------------------
 
     }
 }
@@ -81,8 +79,6 @@ controls::MotorOrientation MotorControls::desiredDirection(const geometry_msgs::
     loc.z += location->z;
     point_log.push_back(loc);
 
-    
-
     angle_m[0] =(sqrt(pow(loc.x,2)+pow(loc.x,2) - pow(rm,2))- r_0[0])/rm 
             - atan(loc.y/loc.x) 
             + asin(sqrt(pow(loc.x,2)+pow(loc.x,2) - pow(rm,2))/
@@ -124,11 +120,15 @@ controls::MotorOrientation MotorControls::desiredDirection(const geometry_msgs::
 * In main, the nuc should just listen for signals with spin
 * 
 */
-int main(){
+int main(int argc, char **argv){
+
+    ros::init(argc, argv, "Nuc");
+    MotorControls nuc_controller = MotorControls(argc, argv);
     while(ros::ok()){
-        
-    ros::spin();
+        ros::spinOnce();
     }
+
+    // this should either be just ros::spin();, or ros::spineOnce() in the while loop
     return 0;
 }
 
