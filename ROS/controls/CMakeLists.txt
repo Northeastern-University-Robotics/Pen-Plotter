@@ -31,7 +31,8 @@ generate_messages(
 # Allow CMake to mark raspberry_controls.py to be executable
 # instead of having everybody do 'chmod +x raspberry_controls.py'
 catkin_install_python(PROGRAMS src/moteus_wrapper.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
 # Allow catkin_make to check *.launch files for errors
 roslaunch_add_file_check(launch)
@@ -42,6 +43,15 @@ roslaunch_add_file_check(launch)
 include_directories(include ${catkin_INCLUDE_DIRS})
 add_executable(nuc_motor_controls src/nuc_motor_controls.cpp src/main.cpp)
 target_link_libraries(nuc_motor_controls ${catkin_LIBRARIES})
+
+message(STATUS "Dest: ${CATKIN_PACKAGE_INCLUDE_DESTINATION}")
+message(STATUS "Dest2: ${CATKIN_PACKAGE_BIN_DESTINATION}")
+
+install(DIRECTORY src/
+    DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+    FILES_MATCHING PATTERN "*.h"
+    PATTERN ".svn" EXCLUDE
+)
 
 # Declare the package as a catkin project
 catkin_package()
