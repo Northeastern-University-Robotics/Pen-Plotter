@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-from typing import List
 import rospy
+import sys
+import signal
+
+from typing import List
 from controls.msg import MotorOrientation
 from controls.msg import MotorState
-import controls_constants as constants
-import sys
 from Motors.Moteus import Moteus
+import controls_constants as constants
 
 class RaspberryPiMoteusWrapper:
     """
@@ -14,13 +16,13 @@ class RaspberryPiMoteusWrapper:
     The RaspberryPiMoteusWrapper is an adaptor which transforms
     incoming sensor data from the Moteus motor hardware into
     ROS messages (as the Moteus interface is incompatible with ROS).
-
-    You specify the configuration of each motor that is in control
-    by supplying a 'MoteusMotorDescriptor' for each of the motors
+    You describe the configuration of the motors by supplying a
+    map which associates each motor (each distinguished by a unique
+    id) to a CAN bus lane on which that motor is communicating.
 
     Each instance of the RaspberryPiMoteusWrapper services a
-    fixed number of motors; you cannot change the number
-    (or names) of the motors that are serviced by each instance.
+    fixed number of motors; you cannot change the number (or identifiers)
+    of the motors that are serviced after you instantiate the class.
     Instead, create a new instance of the class and replace the
     old instance to add more motors
 
@@ -50,6 +52,10 @@ class RaspberryPiMoteusWrapper:
     run_motor_orientation_loop():
         Begins an infinite loop within which the instance publishes
         on the ROS topic about the current orientation of the motors
+
+    shutdown_moteus():
+        Stops the execution of the node and performs any necessary
+        resource cleanup and/or hardware cleanup
     """
 
     # MARK: - Constructors -
@@ -121,6 +127,10 @@ class RaspberryPiMoteusWrapper:
         """Starts the infinite loop to continuously
         publish ROS notifications about the current state
         of the Moteus motors
+
+        This method puts the program in an infinite
+        loop, during each iteration of which the node publishes
+        the current orientation of the Moteus motors
         """
         rate = rospy.Rate(self.hw_refresh_rate)
 
@@ -144,24 +154,39 @@ class RaspberryPiMoteusWrapper:
             self.current_orientation_publisher.publish(msg)
             rate.sleep()
 
+    def shutdown_moteus(self):
+        """Safely terminates the node
+        and performs all cleanup necessary
+        with the Moteus motors and ROS
+
+        It is important to invoke this method
+        before terminating the program; otherwise the
+        Moteus motors in communication with this class
+        will not be properly stopped and there is a
+        possible chance of hardware damage
+        """
+        self.moteus_instance.closeMoteus()
+        exit()
+
     def __desired_orientation_callback(self, msg: MotorOrientation):
         """A method which serves as the callback function
         of the ROS subscriber representing this instance
         as a listener to the 'desired_orientation' topic
 
         @param msg: A message emitted by the Intel NUC
-        of type MotorOrientation describing how the motors
+        of type 'MotorOrientation' describing how the motors
         should be re-oriented
         """
-        if len(id_map) != msg.num_motors:
+        if len(self.id_map) != msg.numMotors:
             raise ValueError('Expected a exactly one desired orientation for each motor')
 
         # The state of the motor at index 'msg_index' corresponds to the
         # (msg_index + 1)st motor in the dictionary mapping motor ids to
         # their CAN bus lanes
-        for msg_index, motor_id in enumerate(id_map.keys()):
-            motor_state = msg.states[motor_id]
-            self.moteus_instance.setAttributes(motor_id, pos=motor_state.position, velocity=motor_state.velocity, torque=motor_state.torque)
+        for msg_index, motor_id in enumerate(self.id_map.keys()):
+            motor_state = msg.states[msg_index]
+            self.moteus_instance.setAttributes(motor_id, motor_state.position, motor_state.velocity, motor_state.torque)
+
 
     # MARK - Python Magic Methods -
 
@@ -174,7 +199,14 @@ class RaspberryPiMoteusWrapper:
 
 # Connect to the ROS subsystem
 rospy.init_node(constants.CONTROLS_PKG_RASPBERRYPI_NODE_NAME)
-
-# Run the node
 wrapper = RaspberryPiMoteusWrapper(motor_list=constants.CONTROLS_PKG_BUS_CONFIGURATION)
-wrapper.run_motor_orientation_loop()
+
+# Add a signal handler for SIGINT (^C)
+signal.signal(signal.SIGINT, lambda sig, frame: wrapper.shutdown_moteus())
+
+# Run the node. The try-except ensures that if anything unexpected error is
+# raised that the Moteus motors are properly notified to stop
+try:
+    wrapper.run_motor_orientation_loop()
+except:
+    wrapper.shutdown_moteus()

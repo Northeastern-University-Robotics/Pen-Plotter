@@ -44,9 +44,6 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 add_executable(nuc_motor_controls src/nuc_motor_controls.cpp src/main.cpp)
 target_link_libraries(nuc_motor_controls ${catkin_LIBRARIES})
 
-message(STATUS "Dest: ${CATKIN_PACKAGE_INCLUDE_DESTINATION}")
-message(STATUS "Dest2: ${CATKIN_PACKAGE_BIN_DESTINATION}")
-
 install(DIRECTORY src/
     DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
     FILES_MATCHING PATTERN "*.h"
