@@ -23,4 +23,4 @@ CONTROLS_PKG_DEFAULT_HW_REFRESH_RATE = 60
 CONTROLS_PKG_BUS_CONFIGURATION = {1 : 0, 2 : 0}
 
 # The name of the node that runs on the RaspberryPi
-CONTROLS_PKG_RASPBERRYPI_NODE_NAME = 'controls_raspberrypi_node'
+CONTROLS_PKG_RASPBERRYPI_NODE_NAME = 'raspberrypi_controls_node'
