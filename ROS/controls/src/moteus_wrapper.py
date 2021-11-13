@@ -4,7 +4,8 @@ import sys
 import signal
 
 from typing import List
-from controls.msg import MotorOrientation
+from controls.msg import CurrentMotorOrientation
+from controls.msg import DesiredMotorOrientation
 from controls.msg import MotorState
 from Motors.Moteus import Moteus
 import controls_constants as constants
@@ -97,14 +98,14 @@ class RaspberryPiMoteusWrapper:
 
         self.desired_orientation_sub = rospy.Subscriber(
             constants.CONTROLS_PKG_DESIRED_ORIENTATION_TOPIC,
-            MotorOrientation,
+            DesiredMotorOrientation,
             callback=self.__desired_orientation_callback,
             queue_size=constants.CONTROLS_PKG_SUBSCRIBER_QUEUE_SIZE
         )
 
         self.current_orientation_publisher = rospy.Publisher(
             constants.CONTROLS_PKG_CURRENT_ORIENTATION_TOPIC,
-            MotorOrientation,
+            CurrentMotorOrientation,
             queue_size=constants.CONTROLS_PKG_PUBLISHER_QUEUE_SIZE
         )
 
@@ -150,7 +151,7 @@ class RaspberryPiMoteusWrapper:
                 motor_state.torque = motor_desc['TORQUE']
                 motor_states.append(motor_state)
 
-            msg = MotorOrientation(numMotors=self.num_motors, states=motor_states)
+            msg = CurrentMotorOrientation(numMotors=self.num_motors, states=motor_states)
             self.current_orientation_publisher.publish(msg)
             rate.sleep()
 
@@ -168,7 +169,7 @@ class RaspberryPiMoteusWrapper:
         self.moteus_instance.closeMoteus()
         exit()
 
-    def __desired_orientation_callback(self, msg: MotorOrientation):
+    def __desired_orientation_callback(self, msg: DesiredMotorOrientation):
         """A method which serves as the callback function
         of the ROS subscriber representing this instance
         as a listener to the 'desired_orientation' topic

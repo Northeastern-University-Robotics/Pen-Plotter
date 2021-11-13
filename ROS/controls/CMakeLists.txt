@@ -20,7 +20,8 @@ catkin_python_setup()
 # Add and generate the message files for the controls package
 add_message_files(
   FILES
-  MotorOrientation.msg
+  CurrentMotorOrientation.msg
+  DesiredMotorOrientation.msg
   MotorState.msg
 )
 generate_messages(

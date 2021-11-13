@@ -16,7 +16,7 @@ MotorControls::MotorControls(int argc, char **argv) {
 
     current_sub = nh.subscribe("current_orientation", 1000, &MotorControls::orientationCallback, this);
     desired_sub = nh.subscribe("desired_position", 1000, &MotorControls::desiredCallback, this);
-    desired_pub = nh.advertise<controls::MotorOrientation>("desired_orientation", 1000);
+    desired_pub = nh.advertise<controls::DesiredMotorOrientation>("desired_orientation", 1000);
 }
 /*
 * desiredCallback is called when the subscriber gets the desired direction from perception/frontend
@@ -36,7 +36,7 @@ void MotorControls::desiredCallback(const geometry_msgs::Point::ConstPtr& locati
 * it then updates the motor orientation stored in the class
 * 
 */
-void MotorControls::orientationCallback(const controls::MotorOrientation::ConstPtr& msg){
+void MotorControls::orientationCallback(const controls::CurrentMotorOrientation::ConstPtr& msg){
     ROS_INFO("Current orientation callback\n");
     if(ros::ok()){
         motor_orientation.numMotors = msg->numMotors;
@@ -61,8 +61,9 @@ void MotorControls::initializeCoordinates(geometry_msgs::Point& initial){
  * Outputs the desired orientation to be sent to the pi
  * 
  */
-controls::MotorOrientation MotorControls::desiredDirection(const geometry_msgs::Point::ConstPtr& location){
-    
+controls::DesiredMotorOrientation
+MotorControls::desiredDirection(const geometry_msgs::Point::ConstPtr& location) {
+
     /*
      * Updates the location's coordinates and puts it into a log
      * 

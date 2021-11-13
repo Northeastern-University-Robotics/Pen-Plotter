@@ -1,5 +1,6 @@
 #include "ros/ros.h"
-#include "controls/MotorOrientation.h"
+#include "controls/DesiredMotorOrientation.h"
+#include "controls/CurrentMotorOrientation.h"
 #include "controls/MotorState.h"
 #include "geometry_msgs/Point.h"
 
@@ -31,7 +32,7 @@ private:
 
     std::vector<geometry_msgs::Point> point_log;
 
-    controls::MotorOrientation motor_orientation;
+    controls::DesiredMotorOrientation motor_orientation;
     geometry_msgs::Point loc;
 
     /*
@@ -53,10 +54,10 @@ private:
      * desiredDirection is called to transform cartesian coordinates into motor orientation messages
      */
 
-    void orientationCallback(const controls::MotorOrientation::ConstPtr& msg);
+    void orientationCallback(const controls::CurrentMotorOrientation::ConstPtr& msg);
     void desiredCallback(const geometry_msgs::Point::ConstPtr& location);
     void initializeCoordinates(geometry_msgs::Point& initial);
-    controls::MotorOrientation desiredDirection(const geometry_msgs::Point::ConstPtr& location);
+    controls::DesiredMotorOrientation desiredDirection(const geometry_msgs::Point::ConstPtr& location);
 
 public:
     MotorControls(int argc, char **argv);
