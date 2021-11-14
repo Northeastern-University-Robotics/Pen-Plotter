@@ -60,8 +60,8 @@ void MotorControls::initializeCoordinates(geometry_msgs::Point& initial){
     loc = initial;
     r_0[0] = sqrt(pow(initial.y,2)+pow(initial.x,2) - pow(rm,2));
     r_0[1] = sqrt(pow(x2 - initial.x,2)+pow(initial.y,2) - pow(rm,2));
-    angle_0[0] = atan(initial.y/(initial.x)) + asin(sqrt(pow(initial.x,2)+pow(initial.x,2) - pow(rm,2))/sqrt(pow(initial.x,2)+pow(initial.x,2)));
-    angle_0[1] = atan(initial.y/(x2-initial.x)) + asin(sqrt(pow(initial.x,2)+pow(initial.x,2) - pow(rm,2))/sqrt(pow(initial.x,2)+pow(initial.x,2)));
+    angle_0[0] = atan(initial.y/(initial.x)) + asin(sqrt(pow(initial.x,2)+pow(initial.y,2) - pow(rm,2))/sqrt(pow(initial.y,2)+pow(initial.x,2)));
+    angle_0[1] = atan(initial.y/(x2-initial.x)) + asin(sqrt(pow(initial.x,2)+pow(initial.y,2) - pow(rm,2))/sqrt(pow(initial.y,2)+pow(initial.x,2)));
     std::cout<<"finished initialization \n";
 }
 
@@ -87,9 +87,9 @@ controls::MotorOrientation MotorControls::desiredDirection(const geometry_msgs::
      */
     angle_m[0] =(sqrt(pow(loc.x,2)+pow(loc.y,2) - pow(rm,2))- r_0[0])/rm 
             - atan(loc.y/loc.x) 
-            + asin(sqrt(pow(loc.x,2)+pow(loc.y,2) - pow(rm,2))/
+            - asin(sqrt(pow(loc.x,2)+pow(loc.y,2) - pow(rm,2))/
                     sqrt(pow(loc.x,2)+pow(loc.y,2))) + angle_0[0];
-    angle_m[1]=(sqrt(pow(loc.y,2)+pow(loc.x,2) - pow(rm,2))-r_0[1])/rm 
+    angle_m[1]= -1*(sqrt(pow(loc.y,2)+pow(loc.x,2) - pow(rm,2))-r_0[1])/rm 
             - atan(loc.y/loc.x) 
             + asin(sqrt(pow(loc.x,2)+pow(loc.y,2) - pow(rm,2))/
                     sqrt(pow(loc.x,2)+pow(loc.y,2))) + angle_0[1];
