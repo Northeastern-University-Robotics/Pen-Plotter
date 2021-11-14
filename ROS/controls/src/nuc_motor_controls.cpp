@@ -61,7 +61,7 @@ void MotorControls::initializeCoordinates(geometry_msgs::Point& initial){
     r_0[0] = sqrt(pow(initial.y,2)+pow(initial.x,2) - pow(rm,2));
     r_0[1] = sqrt(pow(x2 - initial.x,2)+pow(initial.y,2) - pow(rm,2));
     angle_0[0] = atan(initial.y/(initial.x)) + asin(sqrt(pow(initial.x,2)+pow(initial.y,2) - pow(rm,2))/sqrt(pow(initial.y,2)+pow(initial.x,2)));
-    angle_0[1] = atan(initial.y/(x2-initial.x)) + asin(sqrt(pow(initial.x,2)+pow(initial.y,2) - pow(rm,2))/sqrt(pow(initial.y,2)+pow(initial.x,2)));
+    angle_0[1] = atan(initial.y/(x2-initial.x)) - asin(sqrt(pow(initial.x,2)+pow(initial.y,2) - pow(rm,2))/sqrt(pow(initial.y,2)+pow(initial.x,2)));
     std::cout<<"finished initialization \n";
 }
 
