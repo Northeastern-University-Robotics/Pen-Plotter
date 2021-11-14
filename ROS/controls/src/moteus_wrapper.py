@@ -167,7 +167,7 @@ class RaspberryPiMoteusWrapper:
         possible chance of hardware damage
         """
         self.moteus_instance.closeMoteus()
-        exit()
+        exit(0)
 
     def __desired_orientation_callback(self, msg: DesiredMotorOrientation):
         """A method which serves as the callback function
@@ -178,9 +178,6 @@ class RaspberryPiMoteusWrapper:
         of type 'MotorOrientation' describing how the motors
         should be re-oriented
         """
-        if len(self.id_map) != msg.numMotors:
-            raise ValueError('Expected exactly one desired orientation for each motor')
-
         # The state of the motor at index 'msg_index' corresponds to the
         # (msg_index + 1)st motor in the dictionary mapping motor ids to
         # their CAN bus lanes
@@ -202,8 +199,23 @@ class RaspberryPiMoteusWrapper:
 rospy.init_node(constants.CONTROLS_PKG_RASPBERRYPI_NODE_NAME)
 wrapper = RaspberryPiMoteusWrapper(motor_list=constants.CONTROLS_PKG_BUS_CONFIGURATION)
 
-# Add a signal handler for SIGINT (^C)
-signal.signal(signal.SIGINT, lambda sig, frame: wrapper.shutdown_moteus())
+def moteus_wrapper_shutdown_handler(sig, frame):
+    """A method which is invoked for all signals
+    which can be handled by this process
+
+    All abrupt terminations of the program leave
+    the possibility of failing to properly stop the Moteus
+    motors. This function, which acts as the signal handler
+    for all Unix signals that can be processed, ensures
+    the motor hardware knows of sudden process terminations
+    """
+    wrapper.shutdown_moteus()
+
+# Add a signal handlers for all signals that can be captured
+# (SIGKILL and SIGSTOP cannot have handlers set for them)
+valid_signals = set(signal.Signals) - { signal.SIGKILL, signal.SIGSTOP }
+for sig in valid_signals:
+    signal.signal(sig, moteus_wrapper_shutdown_handler)
 
 # Run the node. The try-except ensures that if anything unexpected error is
 # raised that the Moteus motors are properly notified to stop
