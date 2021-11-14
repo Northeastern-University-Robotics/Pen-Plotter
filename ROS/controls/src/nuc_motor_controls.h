@@ -45,7 +45,10 @@ private:
      * @param angle_0 are the original angles
      * 
      */
-    
+
+    geometry_msgs::Point INITIAL_POINT;
+
+
     float x2 = 1;
     float rm = .1;
     float r_0[2];
