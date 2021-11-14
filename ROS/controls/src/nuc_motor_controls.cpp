@@ -26,7 +26,7 @@ MotorControls::MotorControls(int argc, char **argv) {
 */
 void MotorControls::desiredCallback(const geometry_msgs::Point::ConstPtr& location){
     ROS_INFO("Desired orientation callback\n");
-    if (ros::ok()){
+    if (ros::ok() && (motor_orientation.numMotors > 0)){
         this->desired_pub.publish(desiredDirection(location));
     }
 }
@@ -38,7 +38,7 @@ void MotorControls::desiredCallback(const geometry_msgs::Point::ConstPtr& locati
 */
 void MotorControls::orientationCallback(const controls::CurrentMotorOrientation::ConstPtr& msg){
     ROS_INFO("Current orientation callback\n");
-    if(ros::ok()){
+    if(ros::ok() && !(motor_orientation.numMotors >0)){
         motor_orientation.numMotors = msg->numMotors;
         motor_orientation.states = msg->states;
     }

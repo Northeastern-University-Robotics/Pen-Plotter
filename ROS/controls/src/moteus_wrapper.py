@@ -179,7 +179,7 @@ class RaspberryPiMoteusWrapper:
         should be re-oriented
         """
         if len(self.id_map) != msg.numMotors:
-            raise ValueError('Expected a exactly one desired orientation for each motor')
+            raise ValueError('Expected exactly one desired orientation for each motor')
 
         # The state of the motor at index 'msg_index' corresponds to the
         # (msg_index + 1)st motor in the dictionary mapping motor ids to
