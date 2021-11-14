@@ -23,7 +23,7 @@ MotorControls::MotorControls(int argc, char **argv){
      */
 
     INITIAL_POINT.x = 0.5;
-    INITIAL_POINT.y = 1.0;
+    INITIAL_POINT.y = 0.5;
     INITIAL_POINT.z = 0.0;
 
     initializeCoordinates(INITIAL_POINT);
@@ -35,7 +35,7 @@ MotorControls::MotorControls(int argc, char **argv){
 * 
 */
 void MotorControls::desiredCallback(const geometry_msgs::Point::ConstPtr& location){
-    if (ros::ok()){
+    if (ros::ok() && (motor_orientation.numMotors >0)){
         desired_pub.publish(desiredDirection(location));
 
     }
@@ -47,7 +47,7 @@ void MotorControls::desiredCallback(const geometry_msgs::Point::ConstPtr& locati
 * 
 */
 void MotorControls::orientationCallback(const controls::MotorOrientation::ConstPtr& msg){
-    if(ros::ok()){
+    if(ros::ok() && !(motor_orientation.numMotors >0)){
         motor_orientation.numMotors = msg->numMotors;
         motor_orientation.states = msg->states;
     }
@@ -59,7 +59,7 @@ void MotorControls::orientationCallback(const controls::MotorOrientation::ConstP
 void MotorControls::initializeCoordinates(geometry_msgs::Point& initial){
     loc = initial;
     r_0[0] = sqrt(pow(initial.y,2)+pow(initial.x,2) - pow(rm,2));
-    r_0[1] = sqrt(pow(x2 - initial.x,2)+pow(initial.x,2) - pow(rm,2));
+    r_0[1] = sqrt(pow(x2 - initial.x,2)+pow(initial.y,2) - pow(rm,2));
     angle_0[0] = atan(initial.y/(initial.x)) + asin(sqrt(pow(initial.x,2)+pow(initial.x,2) - pow(rm,2))/sqrt(pow(initial.x,2)+pow(initial.x,2)));
     angle_0[1] = atan(initial.y/(x2-initial.x)) + asin(sqrt(pow(initial.x,2)+pow(initial.x,2) - pow(rm,2))/sqrt(pow(initial.x,2)+pow(initial.x,2)));
     std::cout<<"finished initialization \n";
@@ -85,14 +85,14 @@ controls::MotorOrientation MotorControls::desiredDirection(const geometry_msgs::
     /*
      * Actual calculation of motor angles
      */
-    angle_m[0] =(sqrt(pow(loc.x,2)+pow(loc.x,2) - pow(rm,2))- r_0[0])/rm 
+    angle_m[0] =(sqrt(pow(loc.x,2)+pow(loc.y,2) - pow(rm,2))- r_0[0])/rm 
             - atan(loc.y/loc.x) 
-            + asin(sqrt(pow(loc.x,2)+pow(loc.x,2) - pow(rm,2))/
-                    sqrt(pow(loc.x,2)+pow(loc.x,2))) + angle_0[0];
-    angle_m[1]=(sqrt(pow(loc.x,2)+pow(loc.x,2) - pow(rm,2))-r_0[1])/rm 
+            + asin(sqrt(pow(loc.x,2)+pow(loc.y,2) - pow(rm,2))/
+                    sqrt(pow(loc.x,2)+pow(loc.y,2))) + angle_0[0];
+    angle_m[1]=(sqrt(pow(loc.y,2)+pow(loc.x,2) - pow(rm,2))-r_0[1])/rm 
             - atan(loc.y/loc.x) 
-            + asin(sqrt(pow(loc.x,2)+pow(loc.x,2) - pow(rm,2))/
-                    sqrt(pow(loc.x,2)+pow(loc.x,2))) + angle_0[1];
+            + asin(sqrt(pow(loc.x,2)+pow(loc.y,2) - pow(rm,2))/
+                    sqrt(pow(loc.x,2)+pow(loc.y,2))) + angle_0[1];
 
     for(int i = 0; i< motor_orientation.numMotors; i++){
         motor_orientation.states[i].position = angle_m[i];

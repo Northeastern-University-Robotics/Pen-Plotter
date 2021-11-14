@@ -49,7 +49,7 @@ private:
     geometry_msgs::Point INITIAL_POINT;
 
 
-    float x2 = 1;
+    float x2 = 2;
     float rm = .1;
     float r_0[2];
     float angle_0[2];
