@@ -1,0 +1,4 @@
+<launch>
+  <node name="moteus_wrapper" pkg="controls" type="moteus_wrapper.py" />
+  <node name="Nuc" pkg="controls" type="nuc_motor_controls" />
+</launch>

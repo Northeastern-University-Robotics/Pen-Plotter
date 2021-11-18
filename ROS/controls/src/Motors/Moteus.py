@@ -1,9 +1,9 @@
+#!/usr/bin/env python3
 """@package docstring
 Documentation for this module
 
 More details
 """
-
 
 from asyncio.tasks import sleep
 import asyncio
@@ -22,6 +22,8 @@ try:
     import moteus
     from moteus.moteus import Controller
     import moteus_pi3hat
+    import moteus
+    from moteus.moteus import Controller
 except:
     sim_flag = True
 
@@ -97,8 +99,7 @@ class Moteus:
                 self.exitFlag = False #Reset all of the variables
                 self.isReady = False
                 self.mainResults = []
-
-                warnings.warn("", MoteusWarning) #Create a warning and set the simulation prefix for all prints from now on, to make sure user is aware
+                warnings.warn("Simulation mode for Moteus", MoteusWarning) #Create a warning and set the simulation prefix for all prints from now on, to make sure user is aware
                 global print
                 print = MoteusWarning.getSimulationPrintFunction()
                 
